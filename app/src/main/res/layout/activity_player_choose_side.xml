@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundtech_half"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Guidelines 50/50 -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!-- ===================== TILES ===================== -->
+
+    <!-- TL (haut-gauche) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tileTL"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:rotation="180"
+        android:clipChildren="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineV"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineH">
+
+        <ImageView
+            android:id="@+id/tileTokenTL"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="12dp"
+            android:translationX="-200dp"
+            android:translationY="100dp"
+            android:scaleType="fitCenter"
+            android:scaleX="3"
+            android:scaleY="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/tileBottomWrapTL"
+            android:layout_width="0dp"
+            android:layout_height="132dp"
+            android:translationX="120dp"
+            android:translationY="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/tileBottomTL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/rg_card_bg_bottom_0"/>
+
+            <TextView
+                android:id="@+id/tileMoneyTL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:translationX="120dp"
+                android:translationY="0dp"
+                android:fontFamily="@font/kabel_thin"
+                android:text="15M"
+                android:textColor="@android:color/white"
+                android:textSize="64sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tileNameTL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:translationX="-200dp"
+            android:translationY="100dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/kabel_thin"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tileTokenTL"
+            app:layout_constraintBottom_toTopOf="@id/tileBottomWrapTL"
+            app:layout_constraintStart_toStartOf="@id/tileTokenTL"
+            app:layout_constraintEnd_toEndOf="@id/tileTokenTL"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- TR (haut-droit) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tileTR"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:rotation="180"
+        android:clipChildren="false"
+        app:layout_constraintStart_toEndOf="@id/guidelineV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineH">
+
+        <ImageView
+            android:id="@+id/tileTokenTR"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="12dp"
+            android:translationX="200dp"
+            android:translationY="100dp"
+            android:scaleType="fitCenter"
+            android:scaleX="3"
+            android:scaleY="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/tileBottomWrapTR"
+            android:layout_width="0dp"
+            android:layout_height="132dp"
+            android:translationX="-120dp"
+            android:translationY="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/tileBottomTR"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/rg_card_bg_bottom_0"/>
+
+            <TextView
+                android:id="@+id/tileMoneyTR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:translationX="-120dp"
+                android:translationY="0dp"
+                android:text="15M"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/kabel_thin"
+                android:textSize="64sp"
+                android:textStyle="bold"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tileNameTR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:translationX="200dp"
+            android:translationY="100dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/kabel_thin"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tileTokenTR"
+            app:layout_constraintBottom_toTopOf="@id/tileBottomWrapTR"
+            app:layout_constraintStart_toStartOf="@id/tileTokenTR"
+            app:layout_constraintEnd_toEndOf="@id/tileTokenTR"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- BL (bas-gauche) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tileBL"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:clipChildren="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineV"
+        app:layout_constraintTop_toBottomOf="@id/guidelineH"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/tileTokenBL"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="12dp"
+            android:scaleType="fitCenter"
+            android:translationX="200dp"
+            android:translationY="100dp"
+            android:scaleX="3"
+            android:scaleY="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/tileBottomWrapBL"
+            android:layout_width="0dp"
+            android:layout_height="132dp"
+            android:translationX="-120dp"
+            android:translationY="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/tileBottomBL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/rg_card_bg_bottom_0"/>
+
+            <TextView
+                android:id="@+id/tileMoneyBL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:translationX="-120dp"
+                android:translationY="-10dp"
+                android:text="15M"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/kabel_thin"
+                android:textSize="64sp"
+                android:textStyle="bold"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tileNameBL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:translationX="200dp"
+            android:translationY="100dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/kabel_thin"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/tileTokenBL"
+            app:layout_constraintBottom_toTopOf="@id/tileBottomWrapBL"
+            app:layout_constraintStart_toStartOf="@id/tileTokenBL"
+            app:layout_constraintEnd_toEndOf="@id/tileTokenBL"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- BR (bas-droit) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tileBR"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:clipChildren="false"
+        app:layout_constraintStart_toEndOf="@id/guidelineV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineH"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/tileTokenBR"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="12dp"
+            android:translationX="-200dp"
+            android:translationY="100dp"
+            android:scaleX="3"
+            android:scaleY="3"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/tileBottomWrapBR"
+            android:layout_width="0dp"
+            android:layout_height="132dp"
+            android:translationX="120dp"
+            android:translationY="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/tileBottomBR"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/rg_card_bg_bottom_0"/>
+
+            <TextView
+                android:id="@+id/tileMoneyBR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:translationX="120dp"
+                android:translationY="-10dp"
+                android:text="15M"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/kabel_thin"
+                android:textSize="64sp"
+                android:textStyle="bold"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tileNameBR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:translationX="-200dp"
+            android:translationY="100dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/kabel_thin"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/tileTokenBR"
+            app:layout_constraintBottom_toTopOf="@id/tileBottomWrapBR"
+            app:layout_constraintStart_toStartOf="@id/tileTokenBR"
+            app:layout_constraintEnd_toEndOf="@id/tileTokenBR"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ===================== Centre : info & texte ===================== -->
+    <ImageView
+        android:id="@+id/quadInfo"
+        android:layout_width="780px"
+        android:layout_height="574px"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:adjustViewBounds="true"
+        android:src="@drawable/hasbro_quadinfo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/quadText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:fontFamily="@font/kabel"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/quadInfo"
+        app:layout_constraintBottom_toBottomOf="@id/quadInfo"
+        app:layout_constraintStart_toStartOf="@id/quadInfo"
+        app:layout_constraintEnd_toEndOf="@id/quadInfo" />
+
+    <!-- ===================== Tokens de choix ===================== -->
+    <ImageView
+        android:id="@+id/tokenTapTL"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:visibility="gone"
+        android:adjustViewBounds="true"
+        android:rotation="180"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineV"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineH" />
+
+    <ImageView
+        android:id="@+id/tokenTapTR"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:visibility="gone"
+        android:adjustViewBounds="true"
+        android:rotation="180"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@id/guidelineV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineH" />
+
+    <ImageView
+        android:id="@+id/tokenTapBL"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:visibility="gone"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineV"
+        app:layout_constraintTop_toTopOf="@id/guidelineH"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/tokenTapBR"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:visibility="gone"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@id/guidelineV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineH"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- ===== Flèche centrale pour déterminer qui commence ===== -->
+    <ImageView
+        android:id="@+id/arrowSpin"
+        android:layout_width="440dp"
+        android:layout_height="440dp"
+        android:scaleX="3"
+        android:scaleY="3"
+        android:visibility="gone"
+        android:adjustViewBounds="true"
+        android:src="@drawable/rgadvancearrow_half"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

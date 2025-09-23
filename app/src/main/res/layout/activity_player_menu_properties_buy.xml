@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:background="@drawable/backgroundtech_half">
+
+    <!-- BANDEAU GAUCHE :  -->
+    <ImageView
+        android:id="@+id/leftInfoBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/left_info_bar_0"
+        android:translationX="-30dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bannerToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/bannerMoney"
+        app:layout_constraintStart_toStartOf="@+id/bannerMoney"
+        app:layout_constraintTop_toBottomOf="@+id/bannerMoney" />
+
+    <TextView
+        android:id="@+id/bannerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:layout_marginTop="100dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/kabel"
+        android:maxLines="1"
+        android:text="Joueur"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/leftInfoBanner"
+        app:layout_constraintStart_toStartOf="@+id/leftInfoBanner"
+        app:layout_constraintTop_toTopOf="@+id/leftInfoBanner" />
+
+    <TextView
+        android:id="@+id/bannerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/kabel"
+        android:text="0M"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/bannerName"
+        app:layout_constraintStart_toStartOf="@+id/bannerName"
+        app:layout_constraintTop_toBottomOf="@+id/bannerName" />
+
+
+    <!-- Affichage de la calculatrice -->
+    <ImageView
+        android:id="@+id/calculatorDisplay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/calculator_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/leftInfoBanner"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/calculatorScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/kabel"
+        android:text="500M"
+        android:textColor="@color/white"
+        android:textSize="96sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGridNumbers"
+        app:layout_constraintStart_toStartOf="@+id/calculatorDisplay"
+        app:layout_constraintTop_toTopOf="@+id/calculatorDisplay" />
+
+
+
+    <!-- Grille de boutons numériques -->
+    <GridLayout
+        android:id="@+id/buttonGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginBottom="250dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="1"
+        android:rowCount="3"
+        app:layout_constraintBottom_toBottomOf="@+id/calculatorDisplay"
+        app:layout_constraintEnd_toEndOf="@+id/calculatorDisplay">
+
+        <!-- Boutons numériques 1-9 -->
+        <Button
+            android:id="@+id/btnC"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="C"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btnM"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="M"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btnK"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="K"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/buttonGridNumbers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="100dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:rowCount="4"
+        app:layout_constraintBottom_toBottomOf="@id/calculatorDisplay"
+        app:layout_constraintStart_toStartOf="@id/calculatorDisplay"
+        app:layout_constraintTop_toTopOf="@id/calculatorDisplay">
+
+        <!-- Boutons numériques 1-9 -->
+        <Button
+            android:id="@+id/btn7"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="7"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn8"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="8"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn9"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="9"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn4"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="4"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn5"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="5"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn6"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="6"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn1"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="1"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn2"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="2"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn3"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="3"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btn0"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="0"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btnComma"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text=","
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/btnOk"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="509dp"
+            android:layout_height="210dp"
+            android:layout_margin="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="4dp"
+            android:text="OK"
+            android:textColor="@android:color/transparent"
+            android:textSize="60sp" />
+        <!-- close the grid layout -->
+    </GridLayout>
+
+    <!-- Bouton retour en bas à gauche -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/back_btn_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:background="@drawable/backgroundtech_half">
+
+    <!-- HEADER : même ids que PlayerMenuActivity pour réutiliser paintHeader -->
+    <ImageView
+        android:id="@+id/headerBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/headerToken"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBg"
+        app:layout_constraintStart_toStartOf="@+id/headerBg"
+        app:layout_constraintTop_toTopOf="@+id/headerBg"
+        android:layout_margin="24dp" />
+
+    <TextView
+        android:id="@+id/headerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/kabel"
+        android:maxLines="1"
+        android:text="Joueur"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_margin="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBg"
+        app:layout_constraintStart_toEndOf="@+id/headerToken"
+        app:layout_constraintTop_toTopOf="@+id/headerBg" />
+
+    <!-- Bandeau question (image déjà avec texte intégré) -->
+    <TextView
+        android:id="@+id/headerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/kabel"
+        android:text="0M"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_margin="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBg"
+        app:layout_constraintEnd_toEndOf="@+id/headerBg"
+        app:layout_constraintTop_toTopOf="@+id/headerBg" />
+
+    <ImageView
+        android:id="@+id/questionBanner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="24dp"
+        android:adjustViewBounds="true"
+        android:scaleX="1"
+        android:scaleY="0.5"
+        android:src="@drawable/text_fade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerBg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/kabel_thin"
+        android:text="Que voulez-vous faire ?"
+        android:textColor="@android:color/black"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="@id/questionBanner"
+        app:layout_constraintEnd_toEndOf="@id/questionBanner"
+        app:layout_constraintStart_toStartOf="@id/questionBanner"
+        app:layout_constraintTop_toTopOf="@id/questionBanner" />
+
+    <!-- Rangée de 4 boutons -->
+    <LinearLayout
+        android:id="@+id/actionsRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questionBanner">
+
+        <ImageButton
+            android:id="@+id/btnMortgage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/mortgage_button" />
+
+        <ImageButton
+            android:id="@+id/btnUnmortgage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/unmortgage_button" />
+
+        <ImageButton
+            android:id="@+id/btnBuy"
+            android:layout_width="233dp"
+            android:layout_height="224dp"
+            android:layout_margin="24dp"
+            android:background="@android:color/transparent"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/pa_buy_button" />
+
+        <ImageButton
+            android:id="@+id/btnAuction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/pa_property_auction_button_fr" />
+    </LinearLayout>
+
+    <!-- Bouton retour en bas à gauche -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/back_btn_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

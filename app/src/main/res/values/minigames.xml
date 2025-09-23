@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Mini-jeux (famille Chance / Caisse de communauté)
+  Placeholders adaptés au format Android : %1$s, %1$d
+-->
+
+<resources>
+
+    <!-- Finders Keepers / Chapeaux -->
+    <string name="minigame_finders_keepers_announce">Tout le monde joue ! Observez attentivement la pièce : où se cache-t-elle ? Sélectionnez le bon chapeau pour toucher le gros lot !</string>
+    <string name="minigame_finders_keepers_found">Bravo, vous l’avez trouvée !</string>
+    <string name="minigame_finders_keepers_not_found">Personne n’a trouvé la pièce !</string>
+    <string name="minigame_finders_keepers_timeup">Battus par l’horloge ! Personne ne gagne… Soyez plus rapide la prochaine fois !</string>
+
+    <!-- Piñata / Anniversaire -->
+    <string name="minigame_pinata_announce">Tout le monde joue ! Tapotez l’icône de votre pion pour taper. Le premier à casser la piñata gagne !</string>
+    <string name="minigame_pinata_win">%1$s, vous remportez les %2$d de la piñata !</string>
+    <string name="minigame_pinata_nobreak">Personne n’a brisé la piñata… Pas de récompense pour cette fois !</string>
+    <string name="minigame_birthday_title">Joyeux anniversaire %1$s !</string>
+    <string name="minigame_birthday_gift">Nous n’avons pas oublié votre anniversaire ! Recevez %1$d !</string>
+
+    <!-- Énergie / Lumières / Solaire -->
+    <string name="minigame_energy_announce">Tout le monde joue ! Tapotez les lumières qui s’allument de votre couleur. Le joueur le moins rapide payera la note d’électricité !</string>
+    <string name="minigame_energy_super">Super ! Vous avez accumulé beaucoup d’énergie solaire ! Votre facture d’électricité ne sera que de %1$d !</string>
+    <string name="minigame_energy_good">Beau travail ! Vous avez accumulé pas mal d’énergie solaire mais vous pouvez faire mieux la prochaine fois !</string>
+    <string name="minigame_energy_low">Oula ! Pas des masses d’énergie solaire dites-moi ! Votre facture d’électricité s’élève donc à %1$d !</string>
+    <string name="minigame_energy_too_slow_bill">%1$s, vous êtes trop lent ! Vous payez %2$d de note d’électricité.</string>
+
+    <!-- Fuite d’eau -->
+    <string name="minigame_pipe_announce">Tapotez la fuite dès qu’elle apparaît. Le joueur qui colmate la fuite en premier envoie de l’eau chez son adversaire !</string>
+    <string name="minigame_pipe_loser_repair">Dommage %1$s : vous êtes complètement inondé ! Payez %2$d de réparation !</string>
+    <string name="minigame_pipe_noone_pays">Personne ne paiera pour cette fois !</string>
+    <string name="minigame_pipe_loser_must_pay">Le perdant devra verser %1$d !</string>
+
+    <!-- Excès de vitesse / Radar -->
+    <string name="minigame_speeding_announce">Vous êtes en retard pour aller au travail ! Vous devez arriver avant que votre patron s’en aperçoive — mais sans vous faire prendre au radar !</string>
+    <string name="minigame_speeding_tip">Penchez l’appareil vers la droite pour accélérer et vers la gauche pour ralentir. Ralentissez avant de voir la voiture de police sinon vous êtes pris !</string>
+    <string name="minigame_speeding_good">Jolie conduite ! Pas d’amende pour excès de vitesse pour cette fois !</string>
+    <string name="minigame_speeding_too_slow">Trop lent ! Vous payez une amende de %1$d à Monsieur Monopoly !</string>
+    <string name="minigame_speeding_caught">Aïe, vous êtes pris ! Amende pour excès de vitesse !</string>
+
+    <!-- Téléphone / Antenne (Télécom) -->
+    <string name="minigame_telecom_announce">Monsieur Monopoly a un important coup de téléphone à passer ! Montez vite l’antenne téléphonique pour qu’il puisse le passer !</string>
+    <string name="minigame_telecom_success">Bien joué ! Vous avez terminé dans les temps ! Monsieur Monopoly peut passer son coup de fil ! Rien à payer pour cette fois !</string>
+    <string name="minigame_telecom_late">Et non… En retard !</string>
+    <string name="minigame_telecom_hint">Remettez les pièces de l’antenne dans le bon sens. Attention : il pourrait y avoir une pièce en trop… Si vous ne finissez pas dans les temps, vous payerez une amende !</string>
+
+    <!-- Puzzle billet / Glissé-déposé -->
+    <string name="minigame_puzzle_announce">L’horloge tourne ! Tapotez la pièce que vous voulez déplacer dans l’espace vide. Le joueur qui assemble son billet en premier gagne !</string>
+    <string name="minigame_puzzle_success">Beau travail ! Vous touchez vos gains : félicitations !</string>
+    <string name="minigame_puzzle_timeup">Battus par l’horloge ! Personne ne gagne… Soyez plus rapide la prochaine fois !</string>
+
+    <!-- Hockey / Buts -->
+    <string name="minigame_hockey_announce">Marquez un but avec la pièce. Celui qui en marque le plus sur 3 manches gagne !</string>
+    <string name="minigame_hockey_benefits">Le joueur qui marque le plus de buts empoche les bénéfices !</string>
+    <string name="minigame_hockey_winner">%1$s gagne !</string>
+    <string name="minigame_hockey_tie">Égalité ! Personne ne gagne quoique ce soit cette fois !</string>
+
+    <!-- Trivial / Vrai ou Faux -->
+    <string name="minigame_trivia_announce">Tout le monde joue ! Lisez la question à haute voix puis essayez de donner la bonne réponse. Sélectionnez VRAI ou FAUX à l’écran.</string>
+    <string name="minigame_trivia_good">Joli ! Vous connaissez manifestement votre sujet ! Vous méritez vos gains !</string>
+    <string name="minigame_trivia_all_wrong">Oulala ! Vous avez tous besoin de revoir un peu vos connaissances sur Monopoly !</string>
+    <string name="minigame_trivia_bad_loseall">Une mauvaise vous fait tout perdre !</string>
+
+    <!-- Messages génériques temps écoulé -->
+    <string name="minigame_timeup_generic">Battus par l’horloge !</string>
+    <string name="minigame_timeup_nobodywins">Personne ne gagne… Soyez plus rapide la prochaine fois !</string>
+
+</resources>

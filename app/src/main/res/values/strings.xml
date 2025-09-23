@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MonopolyZapped</string>
+    <string name="credit">remake by theox33</string>
+    <string name="card_intro_title_placeholder_important">IMPORTANT!</string>
+    <string name="card_intro_title_placeholder">Scanner votre carte</string>
+    <string name="card_intro_instructions">Quand demandé, appuyez fermement sur l\'écran ainsi.</string>
+</resources>

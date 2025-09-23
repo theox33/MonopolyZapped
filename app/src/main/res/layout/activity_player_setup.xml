@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <!-- Fond optionnel -->
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backgroundtech_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Header image -->
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/header_half"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bg"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <!-- Titre dans le header -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:fontFamily="@font/kabel"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="Nom joueur 1 :"
+        android:textColor="@color/black"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="@+id/header"
+        app:layout_constraintTop_toTopOf="@id/header" />
+
+    <!-- Champ de texte -->
+    <EditText
+        android:id="@+id/inputName"
+        style="@style/Widget.Material3.AutoCompleteTextView.FilledBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="#C9E2EF"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/kabel_thin"
+        android:hint="Entrez un nom"
+        android:imeOptions="actionDone"
+        android:padding="12dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="@+id/header"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        app:layout_constraintTop_toTopOf="@+id/bg" />
+
+    <!-- Grille des 6 pions (3 x 2) -->
+    <GridLayout
+        android:id="@+id/tokenGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:rowCount="2"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        tools:useDefaultMargins="true">
+
+        <ImageView
+            android:id="@+id/tokenCar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="12dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Pion Voiture"
+            android:src="@drawable/hasbro_token_car_bg" />
+
+        <ImageView
+            android:id="@+id/tokenDog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="12dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Pion Chien"
+            android:src="@drawable/hasbro_token_dog_bg" />
+
+        <ImageView
+            android:id="@+id/tokenHat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="12dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Pion Chapeau"
+            android:src="@drawable/hasbro_token_hat_bg" />
+
+        <ImageView
+            android:id="@+id/tokenIron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:adjustViewBounds="true"
+            android:layout_margin="12dp"
+            android:contentDescription="Pion Fer à repasser"
+            android:src="@drawable/hasbro_token_iron_bg" />
+
+        <ImageView
+            android:id="@+id/tokenShip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:adjustViewBounds="true"
+            android:layout_margin="12dp"
+            android:contentDescription="Pion Bateau"
+            android:src="@drawable/hasbro_token_ship_bg" />
+
+        <ImageView
+            android:id="@+id/tokenShoe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:adjustViewBounds="true"
+            android:layout_margin="12dp"
+            android:contentDescription="Pion Chaussure"
+            android:src="@drawable/hasbro_token_shoe_bg" />
+    </GridLayout>
+
+    <!-- Retour -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="Retour"
+        android:src="@drawable/back_btn_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

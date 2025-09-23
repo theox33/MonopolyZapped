@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ===== CAISSE DE COMMUNAUTÉ (20) ===== -->
+    <string name="cc_title">CAISSE DE COMMUNAUTÉ</string>
+
+    <string name="cc_01">Avancez jusqu’à la case Départ. Recevez 2M.</string>
+    <string name="cc_02">Erreur de la banque en votre faveur. Recevez 2M.</string>
+    <string name="cc_03">Frais de scolarité. Payez 5M.</string>
+    <string name="cc_04">Allez en prison. Allez directement en prison, ne passez pas par la case Départ, ne recevez pas 2M.</string>
+    <string name="cc_05">Vous recevez un héritage. Recevez 1M.</string>
+    <string name="cc_06">C’est votre anniversaire ! Chaque joueur vous donne 1M.</string>
+    <string name="cc_07">Frais d’hôpital. Payez 5M.</string>
+    <string name="cc_08">Vos services sont récompensés. Recevez 2,5M.</string>
+    <string name="cc_09">Vous êtes libéré de prison. (Gardez cette carte jusqu’à utilisation.)</string>
+    <string name="cc_10">Rendez-vous à Place Pigalle.</string>
+    <string name="cc_11">Remboursement d’impôts. Recevez 2M.</string>
+    <string name="cc_12">Vous gagnez un concours de beauté. Recevez 2,5M.</string>
+    <string name="cc_13">Payez le médecin. Payez 2,5M.</string>
+    <string name="cc_14">Prime. Recevez 2M.</string>
+    <string name="cc_15">La banque vous verse un bonus. Recevez 1M.</string>
+    <string name="cc_16">Vous avez gagné au quiz. Recevez 2M.</string>
+    <string name="cc_17">Vous êtes malade. Payez 1M.</string>
+    <string name="cc_18">Vous trouvez un portefeuille. Rendez-le : recevez 1M de récompense.</string>
+    <string name="cc_19">Visite à l’hôpital. Payez 1M.</string>
+    <string name="cc_20">Retournez votre carte de propriété, face bleue vers le bas (hypothèque levée).</string>
+
+    <!-- ===== CHANCE (20) ===== -->
+    <string name="ch_title">CHANCE</string>
+
+    <string name="ch_01">Avancez jusqu’à la Rue de la Paix.</string>
+    <string name="ch_02">Reculez de 3 cases.</string>
+    <string name="ch_03">Allez à la Gare Montparnasse.</string>
+    <string name="ch_04">Allez directement en prison. Ne passez pas par la case Départ.</string>
+    <string name="ch_05">Avancez jusqu’à la case Départ. Recevez 2M.</string>
+    <string name="ch_06">Dividende. Recevez 1,5M.</string>
+    <string name="ch_07">Vous êtes élu président du conseil. Versez 5M à chaque joueur.</string>
+    <string name="ch_08">Intérêts de la banque. Recevez 1M.</string>
+    <string name="ch_09">Amende pour excès de vitesse. Payez 2,5M.</string>
+    <string name="ch_10">Allez à la prochaine compagnie de service public. Si elle n’appartient à personne, vous pouvez l’acheter ; sinon, payez le loyer.</string>
+    <string name="ch_11">Allez à la prochaine gare. Même règle d’achat/loyer.</string>
+    <string name="ch_12">Réparations : payez 0,5M par maison et 2,5M par hôtel.</string>
+    <string name="ch_13">La banque vous verse un intérêt. Recevez 1M.</string>
+    <string name="ch_14">Rendez-vous à l’Avenue des Champs-Élysées.</string>
+    <string name="ch_15">Rendez-vous à l’Avenue de Neuilly.</string>
+    <string name="ch_16">Allez à la Gare de Lyon.</string>
+    <string name="ch_17">Amende. Payez 1M.</string>
+    <string name="ch_18">Vous remportez un prix. Recevez 2,5M.</string>
+    <string name="ch_19">Carte « Libéré de prison ». (Gardez cette carte jusqu’à utilisation.)</string>
+    <string name="ch_20">Travaux : payez 1M.</string>
+
+</resources>
