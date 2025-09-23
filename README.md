@@ -21,6 +21,17 @@ The original app is no longer available or maintained, preventing owners of the 
 - 🚧 Mini-games (Chance & Community Chest)  
 - 🚧 Animations and UI close to the original iPad app  
 
+## 📦 Assets  
+⚠️ **Important legal note:**  
+For legal reasons, **assets from the original Monopoly Zapped app are not included in this repository**.  
+These assets (images, sounds, music) belong to **Hasbro, Inc.** and cannot be redistributed here.  
+
+If developers wish to contribute and already own the original resources, they must place them manually in the following directories:  
+- All `.wav` and `.mp3` files → `res/raw/`  
+- All `.png` files → `res/drawable-nodpi/`  
+
+Without these assets, the app will compile and run, but some features (e.g. sounds, graphics) may not function as intended.  
+
 ## 🔮 Roadmap  
 - Support for different screen resolutions and aspect ratios  
 - Sound effects and music from the original game (if legally possible, otherwise re-created)  
