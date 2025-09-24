@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -13,10 +14,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
+import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
+import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.util.TransactionHistory
 import com.example.monopolyzapped.util.TransactionRecord
-import kotlin.math.max
 
 class PlayerTransactionAnimationActivity : AppCompatActivity() {
 
@@ -43,11 +45,17 @@ class PlayerTransactionAnimationActivity : AppCompatActivity() {
     private lateinit var note3: ImageView
     private lateinit var note4: ImageView
 
+    private var playersGlobal = arrayListOf<Player>()
+    private var firstPlayerIndexGlobal = 0
+
     private var sfx: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_transaction_animation)
+
+        // Sécurise les parcelables
+        intent.setExtrasClassLoader(Player::class.java.classLoader)
 
         // Views
         header = findViewById(R.id.headerImg)
@@ -59,11 +67,20 @@ class PlayerTransactionAnimationActivity : AppCompatActivity() {
         note3 = findViewById(R.id.money3)
         note4 = findViewById(R.id.money4)
 
-        // Extras
+        // Extras animation
         val label = intent.getStringExtra(EXTRA_AMOUNT_LABEL) ?: "Transfert..."
         val amountK = intent.getDoubleExtra(EXTRA_AMOUNT_K, 0.0)
         val payerActor = intent.getIntExtra(EXTRA_PAYER_ACTOR, ACTOR_BANK)
         val receiverActor = intent.getIntExtra(EXTRA_RECEIVER_ACTOR, ACTOR_BANK)
+
+        // ➜ Récup navigation propagée (celle que GameMainMenuActivity attend)
+        playersGlobal = if (Build.VERSION.SDK_INT >= 33) {
+            intent.getParcelableArrayListExtra(NavKeys.PLAYERS, Player::class.java) ?: arrayListOf()
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableArrayListExtra<Player>(NavKeys.PLAYERS) ?: arrayListOf()
+        }
+        firstPlayerIndexGlobal = intent.getIntExtra(GameMainMenuActivity.EXTRA_FIRST_PLAYER_INDEX, 0)
 
         header.setImageResource(R.drawable.header_half)
         headerText.text = label
@@ -84,12 +101,10 @@ class PlayerTransactionAnimationActivity : AppCompatActivity() {
         // Placer les billets "sous" l'image du payeur (même centre) avant d'animer
         window.decorView.doOnLayout {
             val (startX, startY) = centerOf(ivPayer, notes.first())
-            val (endX, endY) = centerOf(ivReceiver, notes.first())
-
             notes.forEach { note ->
                 note.x = startX
                 note.y = startY
-                note.visibility = View.VISIBLE  // toujours derrière le visuel payeur si z-order < payer
+                note.visibility = View.VISIBLE
             }
 
             // Build animations séquentielles
@@ -113,7 +128,6 @@ class PlayerTransactionAnimationActivity : AppCompatActivity() {
                     override fun onAnimationEnd(animation: Animator) {
                         completed++
                         if (completed == anims.size) {
-                            // Fin de l’animation globale (~5s)
                             onTransferFinished(amountK, payerActor, receiverActor)
                         }
                     }
@@ -134,8 +148,12 @@ class PlayerTransactionAnimationActivity : AppCompatActivity() {
             )
         )
 
-        // Retour au menu principal
-        startActivity(Intent(this, GameMainMenuActivity::class.java))
+        // Retour au menu principal AVEC les extras attendus
+        val i = Intent(this, GameMainMenuActivity::class.java).apply {
+            putParcelableArrayListExtra(NavKeys.PLAYERS, playersGlobal)
+            putExtra(GameMainMenuActivity.EXTRA_FIRST_PLAYER_INDEX, firstPlayerIndexGlobal)
+        }
+        startActivity(i)
         finish()
     }
 
@@ -147,9 +165,7 @@ class PlayerTransactionAnimationActivity : AppCompatActivity() {
         else         -> R.drawable.transfer4 // banque
     }
 
-    /**
-     * Calcule la position (x,y) pour centrer `child` sous/au centre de `anchor`.
-     */
+    /** Centre `child` sur `anchor` et renvoie (x,y). */
     private fun centerOf(anchor: View, child: View): Pair<Float, Float> {
         val ax = anchor.x
         val ay = anchor.y
