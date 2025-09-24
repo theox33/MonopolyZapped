@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
+import com.example.monopolyzapped.util.MoneyFormat
 
 class PlayerMenuPropertiesActivity : AppCompatActivity() {
 
@@ -93,8 +94,9 @@ class PlayerMenuPropertiesActivity : AppCompatActivity() {
         headerBg.setImageResource(p.headerBgDrawable())
         headerToken.setImageResource(p.tokenDrawable())
         headerName.text = p.name
-        headerMoney.text = "${p.money}M"
+        headerMoney.text = MoneyFormat.fromK(p.money.toLong())
     }
+
 
     private fun wireClicks() {
         // Retour à l’écran précédent

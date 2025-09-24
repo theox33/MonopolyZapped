@@ -27,6 +27,7 @@ import kotlin.random.Random
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import android.widget.FrameLayout
+import com.example.monopolyzapped.util.MoneyFormat
 
 
 class PlayerChooseSideActivity : AppCompatActivity() {
@@ -285,7 +286,7 @@ class PlayerChooseSideActivity : AppCompatActivity() {
         }
         (tokenIv as ImageView).setImageResource(p.tokenDrawableNoBg())
         (nameTv as TextView).text = p.name
-        (moneyTv as TextView).text = "${p.money}M"
+        (moneyTv as TextView).text = MoneyFormat.fromK(p.money.toLong())
         (stripIv as ImageView).setImageResource(p.stripDrawable())
     }
 

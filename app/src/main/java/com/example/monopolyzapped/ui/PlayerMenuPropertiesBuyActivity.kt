@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
+import com.example.monopolyzapped.util.MoneyFormat
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 
 class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
 
@@ -20,8 +19,8 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         const val EXTRA_TURN_INDEX = "turn_index"
 
         // Résultat renvoyé
-        const val EXTRA_AMOUNT_VALUE = "amount_value"     // String "500" ou "123,45"
-        const val EXTRA_AMOUNT_UNIT = "amount_unit"       // "K" ou "M"
+        const val EXTRA_AMOUNT_VALUE = "amount_value"       // String saisi: "500" ou "123,45"
+        const val EXTRA_AMOUNT_UNIT = "amount_unit"         // "K" ou "M"
         const val EXTRA_AMOUNT_MILLIONS = "amount_millions" // Int (valeur convertie en M)
     }
 
@@ -59,11 +58,15 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     private var playerIndex = 0
     private var currentTurnIndex = 0
 
-    // State calculatrice
+    // 💰 Money du joueur en K (base de tous les calculs)
+    private var playerMoneyK: Long = 0
+
+    // State calculatrice (saisie en base K)
     private var buffer = StringBuilder("0")  // nombre saisi SANS unité (peut contenir une virgule)
     private var hasComma = false
     private var selectedUnit: Char? = null   // null, 'K' ou 'M'
 
+    // --- Helpers drawables ---
     private fun Player.leftInfoDrawable(): Int = when (card) {
         "ORANGE" -> R.drawable.left_info_bar_0
         "BLEUE"  -> R.drawable.left_info_bar_1
@@ -82,11 +85,97 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         else   -> R.drawable.hasbro_token_car
     }
 
+    // --- Helpers conversion/contrôle (BASE = K partout) ---
+    private val moneyKBD get() = BigDecimal(playerMoneyK)
+
+    private fun parseToBigDecimal(text: String): BigDecimal {
+        val normalized = text.replace(',', '.')
+        return normalized.toBigDecimalOrNull() ?: BigDecimal.ZERO
+    }
+
+    /**
+     * Convertit la saisie en K (BigDecimal, sans arrondi).
+     * - unit == null  -> base K (valeur telle quelle)
+     * - unit == 'K'   -> K
+     * - unit == 'M'   -> M * 1000 = K
+     */
+    private fun toKExactBD(text: String, unit: Char?): BigDecimal {
+        val v = parseToBigDecimal(text)
+        return when (unit) {
+            null, 'K' -> v
+            'M'       -> v.multiply(BigDecimal(1000))
+            else      -> v
+        }
+    }
+
+    // Pendant la saisie SANS unité: valeur (en K) <= moneyK
+    private fun fitsAsBaseK(text: String): Boolean = toKExactBD(text, null) <= moneyKBD
+
+    // Avec unité choisie: valeur (en K) <= moneyK
+    private fun fitsWithUnit(text: String, unit: Char): Boolean = toKExactBD(text, unit) <= moneyKBD
+
+    // Conversion pour l'extra en M (arrondi au plus proche)
+    private fun toMillionsForResult(valueStr: String, unit: Char): Int {
+        val inK = toKExactBD(valueStr, unit)
+        val inM = inK.divide(BigDecimal(1000), 9, RoundingMode.HALF_UP)
+        val rounded = inM.setScale(0, RoundingMode.HALF_UP)
+        val asLong = rounded.toLong()
+        val clamped = asLong.coerceIn(0L, 2_000_000_000L)
+        return clamped.toInt()
+    }
+
+
+    // Compte les décimales après la virgule
+    private fun decimalCount(text: String): Int {
+        val i = text.indexOf(',')
+        return if (i >= 0 && i + 1 < text.length) text.length - (i + 1) else 0
+    }
+
+    // Formate un BigDecimal avec virgule FR, max 3 décimales, sans zéros traînants
+    private fun formatWithCommaMax3(bd: BigDecimal): String {
+        val s = bd.setScale(3, RoundingMode.DOWN) // au plus 3 décimales, jamais au-dessus
+            .stripTrailingZeros()
+            .toPlainString()
+            .replace('.', ',')
+        return if (s.endsWith(",")) s.dropLast(1) else s
+    }
+
+    /**
+     * Si la saisie (en base K, sans unité) atteint >= 1000 K :
+     * - Convertit en M (K/1000) avec max 3 décimales (précision du K)
+     * - Remplace le buffer par la valeur en M
+     * - Force l’unité sur 'M'
+     */
+    private fun autoSwitchToMIfNeeded() {
+        // Ne rien faire si déjà en 'M'
+        if (selectedUnit == 'M') return
+
+        val textK = buffer.toString()
+        // Si la saisie a une virgule alors qu’on est en base K, on n’autoswitch que si la partie entière >= 1000
+        // (mais le test numérique couvre tous les cas proprement)
+        val k = toKExactBD(textK, null) // null = base K
+        if (k >= BigDecimal(1000)) {
+            val m = k.divide(BigDecimal(1000))
+            val textM = formatWithCommaMax3(m)
+            // Sécurité fonds (should be true car valeur équivalente)
+            if (fitsWithUnit(textM, 'M')) {
+                buffer.clear().append(textM)
+                hasComma = textM.contains(',')
+                selectedUnit = 'M'
+                btnM.alpha = 1.0f
+                btnK.alpha = 0.5f
+            }
+        }
+    }
+
+
+
+    // --- Lifecycle ---
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_menu_properties_buy)
 
-        // Sécurise le classloader pour Parcelize
+        // Sécurise Parcels
         intent.setExtrasClassLoader(Player::class.java.classLoader)
 
         playerIndex = intent.getIntExtra(EXTRA_PLAYER_INDEX, 0)
@@ -105,7 +194,11 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         }
 
         bindViews()
-        paintBanner(players[playerIndex])
+
+        val player = players[playerIndex]
+        playerMoneyK = player.money.toLong() // Player.money est en K
+        paintBanner(player)
+
         refreshScreen()
         updateOkEnabled()
         wireClicks()
@@ -144,24 +237,21 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         leftInfoBanner.setImageResource(p.leftInfoDrawable())
         bannerToken.setImageResource(p.tokenDrawable())
         bannerName.text = p.name
-        bannerMoney.text = "${p.money}M"
+        // Affichage: si <1000K => "xxxK", sinon "xx,xxM"
+        bannerMoney.text = MoneyFormat.fromK(p.money.toLong())
     }
 
-    // Remplace intégralement cette fonction
     private fun refreshScreen() {
         val base = buffer.toString()              // valeur saisie
         val unit = selectedUnit?.toString() ?: "" // "K", "M" ou ""
         calculatorScreen.text = base + unit
     }
 
-
     private fun wireClicks() {
         btnBack.setOnClickListener { finish() }
 
         // C efface tout et enlève l'unité
-        btnC.setOnClickListener {
-            clearAll()
-        }
+        btnC.setOnClickListener { clearAll() }
 
         // Sélection exclusive de l’unité
         btnM.setOnClickListener { selectUnit('M') }
@@ -182,12 +272,12 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         // Virgule
         btnComma.setOnClickListener { addComma() }
 
-        // OK : uniquement si montant > 0 ET unité sélectionnée
+        // OK : uniquement si montant > 0 ET unité sélectionnée ET montant (en K) <= moneyK
         btnOk.setOnClickListener {
             if (!btnOk.isEnabled) return@setOnClickListener
             val valueStr = buffer.toString()
             val unit = selectedUnit ?: return@setOnClickListener
-            val millions = toMillions(valueStr, unit)
+            val millions = toMillionsForResult(valueStr, unit)
 
             val data = Intent().apply {
                 putExtra(EXTRA_AMOUNT_VALUE, valueStr)
@@ -204,16 +294,31 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     // --- Edition ---
 
     private fun appendDigit(d: Char) {
-        // Évite les zéros de tête inutiles si pas de décimal
-        if (!hasComma && buffer.toString() == "0") {
-            if (d != '0') buffer.clear().append(d)
-            // d == '0' -> rester sur "0"
-        } else {
-            buffer.append(d)
+        val current = buffer.toString()
+
+        // Si on a déjà une virgule et 3 décimales, on bloque
+        if (hasComma && decimalCount(current) >= 3) return
+
+        val next = if (!hasComma && current == "0") {
+            if (d == '0') "0" else d.toString()
+        } else current + d
+
+        // Base K : ne jamais dépasser le solde en K
+        if (!fitsAsBaseK(next)) return
+
+        // Si une unité est déjà choisie, revalider avec cette unité (en K)
+        selectedUnit?.let { unit ->
+            if (!fitsWithUnit(next, unit)) return
         }
+
+        buffer.clear().append(next)
+        // Si la saisie en K atteint >= 1000, on force la bascule en 'M'
+        autoSwitchToMIfNeeded()
+
         refreshScreen()
         updateOkEnabled()
     }
+
 
     private fun addComma() {
         if (!hasComma) {
@@ -234,50 +339,42 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     }
 
     // Sélectionne K ou M, exclusif ; null pour déselectionner (utilisé par C)
-    // Remplace intégralement cette fonction
     private fun selectUnit(unit: Char?) {
+        if (unit == null) {
+            selectedUnit = null
+            btnM.alpha = 0.5f
+            btnK.alpha = 0.5f
+            refreshScreen()
+            updateOkEnabled()
+            return
+        }
+
+        // Règle: impossible de sélectionner K si le nombre comporte une virgule
+        if (unit == 'K' && hasComma) {
+            return
+        }
+
+        val text = buffer.toString()
+        // La valeur en K (selon unité demandée) doit rester <= moneyK
+        if (!fitsWithUnit(text, unit)) {
+            return
+        }
+
         selectedUnit = unit
-        // feedback visuel simple par alpha
         btnM.alpha = if (unit == 'M') 1.0f else 0.5f
         btnK.alpha = if (unit == 'K') 1.0f else 0.5f
-
-        refreshScreen()    // <-- met à jour l’affichage immédiatement ("123M" / "123K")
-        updateOkEnabled()  // garde la logique d’activation du bouton OK
+        refreshScreen()
+        updateOkEnabled()
     }
 
 
     // Active/désactive OK selon les règles métier
     private fun updateOkEnabled() {
         val amountPositive = parseToBigDecimal(buffer.toString()) > BigDecimal.ZERO
-        val unitChosen = selectedUnit != null
-        val enabled = amountPositive && unitChosen
+        val unit = selectedUnit
+        val withinFunds = unit?.let { fitsWithUnit(buffer.toString(), it) } == true
+        val enabled = amountPositive && unit != null && withinFunds
         btnOk.isEnabled = enabled
         btnOk.alpha = if (enabled) 1.0f else 0.5f
-    }
-
-    // --- Parsing & conversion ---
-
-    private fun parseToBigDecimal(text: String): BigDecimal {
-        // accepte virgule FR, remplace par point
-        val normalized = text.replace(',', '.')
-        return normalized.toBigDecimalOrNull() ?: BigDecimal.ZERO
-    }
-
-    /**
-     * Convertit la valeur saisie + unité en **millions** (int, arrondi).
-     * - Si unité == 'M' :  "500" => 500M
-     * - Si unité == 'K' :  "500" => 0.5M -> 1M (arrondi HALF_UP)
-     */
-    private fun toMillions(valueStr: String, unit: Char): Int {
-        val value = parseToBigDecimal(valueStr)
-        val inMillions = when (unit) {
-            'M' -> value
-            'K' -> value.divide(BigDecimal(1000), 9, RoundingMode.HALF_UP)
-            else -> BigDecimal.ZERO
-        }
-        val rounded = inMillions.setScale(0, RoundingMode.HALF_UP)
-        val asLong = rounded.toLong()
-        val clamped = asLong.coerceIn(0L, 2_000_000_000L)
-        return clamped.toInt()
     }
 }

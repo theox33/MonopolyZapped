@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
+import com.example.monopolyzapped.util.MoneyFormat
 
 class GameMainMenuActivity : AppCompatActivity() {
 
@@ -137,7 +138,7 @@ class GameMainMenuActivity : AppCompatActivity() {
         }
         tokenIv.setImageResource(p.tokenDrawableNoBg())
         nameTv.text = p.name
-        moneyTv.text = "${p.money}M"
+        moneyTv.text = MoneyFormat.fromK(p.money.toLong())
         stripIv.setImageResource(p.stripDrawable())
     }
 
