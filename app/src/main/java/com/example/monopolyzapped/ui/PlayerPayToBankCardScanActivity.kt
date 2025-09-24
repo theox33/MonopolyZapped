@@ -60,6 +60,10 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
     private lateinit var debugOverlay: DebugOverlayView
     private var debugEnabled = false
 
+    // mémoriser pour re-use lors du succès
+    private var amountKGlobal: Double = 0.0
+    private var currentPlayerGlobal: Player? = null
+
     private fun tokenToDrawable(token: String): Int = when (token) {
         "dog"  -> R.drawable.hasbro_token_dog
         "hat"  -> R.drawable.hasbro_token_hat
@@ -118,6 +122,10 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         val currentIndex = intent.getIntExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, 1)
         val currentPlayer = players.getOrNull(currentIndex - 1)
         val amountK = intent.getDoubleExtra(EXTRA_AMOUNT_K, 0.0)
+
+        // stock pour usage ultérieur
+        amountKGlobal = amountK
+        currentPlayerGlobal = currentPlayer
 
         // Affichages haut
         currentPlayer?.let { p ->
@@ -198,7 +206,6 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         }
 
         if (scanned != expected) {
-            // --- Mauvaise carte : message + son + wobble ---
             tvScanStatus.text = "Hé! Ce n'est pas votre carte!"
             wobbleScanBand()
             playBuzzer()
@@ -206,17 +213,25 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
             return
         }
 
-        // OK : bonne carte -> succès + retour
+        // OK : bonne carte -> succès + animation de transfert
         hasCompleted = true
         applyBandColor(detection.color)
         bounceScanBand()
         playSuccess()
 
         handler.postDelayed({
-            val result = Intent().apply {
-                putExtra(RESULT_CARD, scanned)
+            // Payer = couleur du joueur ; Receiver = Banque (4)
+            val payerActor = colorNameToTransferIndex(expected)
+            val receiverActor = PlayerTransactionAnimationActivity.ACTOR_BANK
+            val amountFormatted = formatMoneyK(amountKGlobal)
+
+            val intentAnim = Intent(this, PlayerTransactionAnimationActivity::class.java).apply {
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_AMOUNT_LABEL, "Transfert... $amountFormatted")
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_AMOUNT_K, amountKGlobal)
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_PAYER_ACTOR, payerActor)
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_RECEIVER_ACTOR, receiverActor)
             }
-            setResult(RESULT_OK, result)
+            startActivity(intentAnim)
             finish()
         }, 1000L)
     }
@@ -344,6 +359,14 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         )
 
         return rects.any { it.contains(p1) } && rects.any { it.contains(p2) }
+    }
+
+    private fun colorNameToTransferIndex(colorName: String?): Int = when (colorName) {
+        "ORANGE" -> 0
+        "BLEUE"  -> 1
+        "ROSE"   -> 2
+        "VERTE"  -> 3
+        else     -> 4 // par défaut banque, au cas où
     }
 
     override fun onDestroy() {
