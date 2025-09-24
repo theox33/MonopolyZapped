@@ -14,7 +14,7 @@ import java.math.RoundingMode
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.media.AudioAttributes
-
+import androidx.activity.result.contract.ActivityResultContracts // <-- ajout
 
 class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
 
@@ -34,7 +34,6 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     private var goopLoaded = false
     private var okPlayer: MediaPlayer? = null
     private var sndBackId: MediaPlayer? = null
-
 
     // Bandeau gauche
     private lateinit var leftInfoBanner: ImageView
@@ -77,6 +76,24 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     private var buffer = StringBuilder("0")  // nombre saisi SANS unité (peut contenir une virgule)
     private var hasComma = false
     private var selectedUnit: Char? = null   // null, 'K' ou 'M'
+
+    // --- Résultat en attente (à renvoyer après scan OK) ---
+    private var pendingResultData: Intent? = null
+
+    // --- Launcher pour l’activité de scan ---
+    private val payScanLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { res ->
+        if (res.resultCode == RESULT_OK) {
+            // Scan validé: on renvoie le résultat (montant) à l’écran précédent
+            pendingResultData?.let {
+                setResult(RESULT_OK, it)
+                finish()
+            }
+        } else {
+            // Scan annulé ou non valide: rester sur cet écran (aucune action)
+        }
+    }
 
     // --- Helpers drawables ---
     private fun Player.leftInfoDrawable(): Int = when (card) {
@@ -136,7 +153,6 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         return clamped.toInt()
     }
 
-
     // Compte les décimales après la virgule
     private fun decimalCount(text: String): Int {
         val i = text.indexOf(',')
@@ -159,17 +175,12 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
      * - Force l’unité sur 'M'
      */
     private fun autoSwitchToMIfNeeded() {
-        // Ne rien faire si déjà en 'M'
         if (selectedUnit == 'M') return
-
         val textK = buffer.toString()
-        // Si la saisie a une virgule alors qu’on est en base K, on n’autoswitch que si la partie entière >= 1000
-        // (mais le test numérique couvre tous les cas proprement)
-        val k = toKExactBD(textK, null) // null = base K
+        val k = toKExactBD(textK, null)
         if (k >= BigDecimal(1000)) {
             val m = k.divide(BigDecimal(1000))
             val textM = formatWithCommaMax3(m)
-            // Sécurité fonds (should be true car valeur équivalente)
             if (fitsWithUnit(textM, 'M')) {
                 buffer.clear().append(textM)
                 hasComma = textM.contains(',')
@@ -196,7 +207,6 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         }
         sndGoopId = soundPool.load(this, R.raw.goop23, 1)
 
-        // OK: son plus “long” → MediaPlayer
         okPlayer = MediaPlayer.create(this, R.raw.congrats)
         sndBackId = MediaPlayer.create(this, R.raw.back_button_press)
     }
@@ -222,7 +232,6 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
             }
             okPlayer?.start()
         } catch (_: Throwable) {
-            // fallback si souci audio : on exécute quand même l’action
             action()
         }
     }
@@ -233,8 +242,6 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         try { okPlayer?.release() } catch (_: Throwable) {}
         okPlayer = null
     }
-
-
 
     // --- Lifecycle ---
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -304,13 +311,12 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         leftInfoBanner.setImageResource(p.leftInfoDrawable())
         bannerToken.setImageResource(p.tokenDrawable())
         bannerName.text = p.name
-        // Affichage: si <1000K => "xxxK", sinon "xx,xxM"
         bannerMoney.text = MoneyFormat.fromK(p.money.toLong())
     }
 
     private fun refreshScreen() {
-        val base = buffer.toString()              // valeur saisie
-        val unit = selectedUnit?.toString() ?: "" // "K", "M" ou ""
+        val base = buffer.toString()
+        val unit = selectedUnit?.toString() ?: ""
         calculatorScreen.text = base + unit
     }
 
@@ -339,18 +345,16 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         // Virgule
         btnComma.setOnClickListener { playGoop(); addComma() }
 
-        // OK : jouer "congrats" puis terminer
+        // OK : jouer "congrats" puis lancer l’activité de scan
         btnOk.setOnClickListener {
-            if (!btnOk.isEnabled) {
-                // si tu veux un feedback quand OK est désactivé, tu peux jouer goop ici :
-                // playGoop()
-                return@setOnClickListener
-            }
+            if (!btnOk.isEnabled) return@setOnClickListener
+
             val valueStr = buffer.toString()
             val unit = selectedUnit ?: return@setOnClickListener
-            val millions = toMillionsForResult(valueStr, unit)
 
-            val data = Intent().apply {
+            // 1) Prépare le "résultat" (qui sera renvoyé APRES scan validé)
+            val millions = toMillionsForResult(valueStr, unit)
+            pendingResultData = Intent().apply {
                 putExtra(EXTRA_AMOUNT_VALUE, valueStr)
                 putExtra(EXTRA_AMOUNT_UNIT, unit.toString())
                 putExtra(EXTRA_AMOUNT_MILLIONS, millions)
@@ -358,43 +362,42 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
                 putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
             }
 
-            // joue le son, puis setResult + finish()
+            // 2) Calcule le montant en K (Double) pour l’écran de scan
+            val amountK = toKExactBD(valueStr, unit).toDouble()
+
+            // 3) Joue le son "congrats", puis lance l’activité de scan/validation
             playCongratsThen {
-                setResult(RESULT_OK, data)
-                finish()
+                val i = Intent(this, PlayerPayToBankCardScanActivity::class.java).apply {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                    putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, players.size)
+                    // PlayerPayToBankCardScanActivity attend un index 1-based
+                    putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, playerIndex + 1)
+                    putExtra(PlayerPayToBankCardScanActivity.EXTRA_AMOUNT_K, amountK)
+                    putExtra(PlayerPayToBankCardScanActivity.EXTRA_SHOW_BACK, true)
+                    putExtra(PlayerPayToBankCardScanActivity.EXTRA_DEBUG_OVERLAY, true)
+                }
+                payScanLauncher.launch(i)
             }
         }
     }
 
-
     // --- Edition ---
-
     private fun appendDigit(d: Char) {
         val current = buffer.toString()
-
-        // Si on a déjà une virgule et 3 décimales, on bloque
         if (hasComma && decimalCount(current) >= 3) return
 
         val next = if (!hasComma && current == "0") {
             if (d == '0') "0" else d.toString()
         } else current + d
 
-        // Base K : ne jamais dépasser le solde en K
         if (!fitsAsBaseK(next)) return
-
-        // Si une unité est déjà choisie, revalider avec cette unité (en K)
-        selectedUnit?.let { unit ->
-            if (!fitsWithUnit(next, unit)) return
-        }
+        selectedUnit?.let { unit -> if (!fitsWithUnit(next, unit)) return }
 
         buffer.clear().append(next)
-        // Si la saisie en K atteint >= 1000, on force la bascule en 'M'
         autoSwitchToMIfNeeded()
-
         refreshScreen()
         updateOkEnabled()
     }
-
 
     private fun addComma() {
         if (!hasComma) {
@@ -409,32 +412,23 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     private fun clearAll() {
         buffer.clear().append("0")
         hasComma = false
-        selectUnit(null) // retire l’unité
+        selectUnit(null)
         refreshScreen()
         updateOkEnabled()
     }
 
-    // Sélectionne K ou M, exclusif ; null pour déselectionner (utilisé par C)
     private fun selectUnit(unit: Char?) {
         if (unit == null) {
             selectedUnit = null
             btnM.alpha = 0.5f
             btnK.alpha = 0.5f
-            refreshScreen()
-            updateOkEnabled()
-            return
+            refreshScreen(); updateOkEnabled(); return
         }
-
         // Règle: impossible de sélectionner K si le nombre comporte une virgule
-        if (unit == 'K' && hasComma) {
-            return
-        }
+        if (unit == 'K' && hasComma) return
 
         val text = buffer.toString()
-        // La valeur en K (selon unité demandée) doit rester <= moneyK
-        if (!fitsWithUnit(text, unit)) {
-            return
-        }
+        if (!fitsWithUnit(text, unit)) return
 
         selectedUnit = unit
         btnM.alpha = if (unit == 'M') 1.0f else 0.5f
@@ -443,8 +437,7 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         updateOkEnabled()
     }
 
-
-    // Active/désactive OK selon les règles métier
+    // Active/désactive OK selon règles
     private fun updateOkEnabled() {
         val amountPositive = parseToBigDecimal(buffer.toString()) > BigDecimal.ZERO
         val unit = selectedUnit

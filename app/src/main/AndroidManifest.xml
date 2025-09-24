@@ -47,6 +47,7 @@
         <activity android:name=".ui.PlayerMenuActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuPropertiesActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuPropertiesBuyActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerPayToBankCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
 
 
 
