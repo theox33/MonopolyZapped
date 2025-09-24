@@ -54,11 +54,20 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
     private val neededStable = 2
     private var hasCompleted = false
     private var successSfx: MediaPlayer? = null
-    private var buzzerSfx: MediaPlayer? = null  // <-- ajout
+    private var buzzerSfx: MediaPlayer? = null
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var debugOverlay: DebugOverlayView
     private var debugEnabled = false
+
+    // mémoriser pour re-use lors du succès
+    private var amountKGlobal: Double = 0.0
+    private var currentPlayerGlobal: Player? = null
+
+    private var playersGlobal = arrayListOf<Player>()
+    private var totalPlayersGlobal = 0
+    private var currentIndexGlobal = 1
+    private var firstPlayerIndexGlobal = 0 // <- index 0-based attendu par GameMainMenuActivity
 
     private fun tokenToDrawable(token: String): Int = when (token) {
         "dog"  -> R.drawable.hasbro_token_dog
@@ -74,7 +83,7 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pay_to_bank_card_scan)
 
-        // --- Sécurise le ClassLoader pour les Parcelables (évite BadParcelableException) ---
+        // --- Sécurise le ClassLoader pour les Parcelables ---
         intent.setExtrasClassLoader(Player::class.java.classLoader)
 
         // --- overlay debug optionnel ---
@@ -118,6 +127,16 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         val currentIndex = intent.getIntExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, 1)
         val currentPlayer = players.getOrNull(currentIndex - 1)
         val amountK = intent.getDoubleExtra(EXTRA_AMOUNT_K, 0.0)
+
+        // stock pour usage ultérieur
+        amountKGlobal = amountK
+        currentPlayerGlobal = currentPlayer
+
+        // stocke aussi players + index
+        playersGlobal = players
+        totalPlayersGlobal = totalPlayers
+        currentIndexGlobal = currentIndex
+        firstPlayerIndexGlobal = (currentIndex - 1).coerceIn(0, (players.size - 1).coerceAtLeast(0))
 
         // Affichages haut
         currentPlayer?.let { p ->
@@ -198,7 +217,6 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         }
 
         if (scanned != expected) {
-            // --- Mauvaise carte : message + son + wobble ---
             tvScanStatus.text = "Hé! Ce n'est pas votre carte!"
             wobbleScanBand()
             playBuzzer()
@@ -206,18 +224,35 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
             return
         }
 
-        // OK : bonne carte -> succès + retour
+        // OK : bonne carte -> succès + animation de transfert
         hasCompleted = true
         applyBandColor(detection.color)
         bounceScanBand()
         playSuccess()
 
         handler.postDelayed({
-            val result = Intent().apply {
-                putExtra(RESULT_CARD, scanned)
+            // Payer = couleur du joueur ; Receiver = Banque (4)
+            val payerActor = colorNameToTransferIndex(expected)
+            val receiverActor = PlayerTransactionAnimationActivity.ACTOR_BANK
+            val amountFormatted = formatMoneyK(amountKGlobal)
+
+            val intentAnim = Intent(this, PlayerTransactionAnimationActivity::class.java).apply {
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_AMOUNT_LABEL, "Transfert... $amountFormatted")
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_AMOUNT_K, amountKGlobal)
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_PAYER_ACTOR, payerActor)
+                putExtra(PlayerTransactionAnimationActivity.EXTRA_RECEIVER_ACTOR, receiverActor)
+
+                // ➜ Propager la navigation (et l’index attendu par GameMainMenuActivity)
+                putParcelableArrayListExtra(NavKeys.PLAYERS, playersGlobal)
+                putExtra(GameMainMenuActivity.EXTRA_FIRST_PLAYER_INDEX, firstPlayerIndexGlobal)
+
+                // Optionnel: on peut aussi propager ces extras si tu les réutilises plus tard
+                putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, totalPlayersGlobal)
+                putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, currentIndexGlobal)
             }
-            setResult(RESULT_OK, result)
+            startActivity(intentAnim)
             finish()
+
         }, 1000L)
     }
 
@@ -225,8 +260,6 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         hasCompleted = false
         stableCount = 0
         lastColor = null
-        // Ne pas écraser le message d'erreur tout de suite : laisser le buzzer jouer.
-        // On remet l'invite au prochain geste tactile (ou après un court laps de temps si tu préfères).
         handler.postDelayed({
             if (!hasCompleted) {
                 tvScanStatus.text = "${currentPlayer.name}, validez le paiement en posant votre carte sur l’écran."
@@ -344,6 +377,14 @@ class PlayerPayToBankCardScanActivity : AppCompatActivity() {
         )
 
         return rects.any { it.contains(p1) } && rects.any { it.contains(p2) }
+    }
+
+    private fun colorNameToTransferIndex(colorName: String?): Int = when (colorName) {
+        "ORANGE" -> 0
+        "BLEUE"  -> 1
+        "ROSE"   -> 2
+        "VERTE"  -> 3
+        else     -> 4 // par défaut banque, au cas où
     }
 
     override fun onDestroy() {
