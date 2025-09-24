@@ -11,6 +11,10 @@ import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.util.MoneyFormat
 import java.math.BigDecimal
 import java.math.RoundingMode
+import android.media.MediaPlayer
+import android.media.SoundPool
+import android.media.AudioAttributes
+
 
 class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
 
@@ -23,6 +27,14 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         const val EXTRA_AMOUNT_UNIT = "amount_unit"         // "K" ou "M"
         const val EXTRA_AMOUNT_MILLIONS = "amount_millions" // Int (valeur convertie en M)
     }
+
+    // --- Audio ---
+    private lateinit var soundPool: SoundPool
+    private var sndGoopId: Int = 0
+    private var goopLoaded = false
+    private var okPlayer: MediaPlayer? = null
+    private var sndBackId: MediaPlayer? = null
+
 
     // Bandeau gauche
     private lateinit var leftInfoBanner: ImageView
@@ -168,6 +180,60 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
         }
     }
 
+    private fun initSounds() {
+        val attrs = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(4)
+            .setAudioAttributes(attrs)
+            .build()
+
+        soundPool.setOnLoadCompleteListener { _, sampleId, status ->
+            if (status == 0 && sampleId == sndGoopId) goopLoaded = true
+        }
+        sndGoopId = soundPool.load(this, R.raw.goop23, 1)
+
+        // OK: son plus “long” → MediaPlayer
+        okPlayer = MediaPlayer.create(this, R.raw.congrats)
+        sndBackId = MediaPlayer.create(this, R.raw.back_button_press)
+    }
+
+    private fun playGoop() {
+        if (goopLoaded) {
+            soundPool.play(sndGoopId, 1f, 1f, 1, 0, 1f)
+        }
+    }
+
+    private fun playBackButtonPress() {
+        try {
+            sndBackId?.seekTo(0)
+            sndBackId?.start()
+        } catch (_: Throwable) {}
+    }
+
+    private fun playCongratsThen(action: () -> Unit) {
+        try {
+            okPlayer?.setOnCompletionListener {
+                it.seekTo(0)
+                action()
+            }
+            okPlayer?.start()
+        } catch (_: Throwable) {
+            // fallback si souci audio : on exécute quand même l’action
+            action()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try { soundPool.release() } catch (_: Throwable) {}
+        try { okPlayer?.release() } catch (_: Throwable) {}
+        okPlayer = null
+    }
+
 
 
     // --- Lifecycle ---
@@ -201,6 +267,7 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
 
         refreshScreen()
         updateOkEnabled()
+        initSounds()
         wireClicks()
     }
 
@@ -248,33 +315,37 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
     }
 
     private fun wireClicks() {
-        btnBack.setOnClickListener { finish() }
+        btnBack.setOnClickListener { playBackButtonPress(); finish() }
 
         // C efface tout et enlève l'unité
-        btnC.setOnClickListener { clearAll() }
+        btnC.setOnClickListener { playGoop(); clearAll() }
 
         // Sélection exclusive de l’unité
-        btnM.setOnClickListener { selectUnit('M') }
-        btnK.setOnClickListener { selectUnit('K') }
+        btnM.setOnClickListener { playGoop(); selectUnit('M') }
+        btnK.setOnClickListener { playGoop(); selectUnit('K') }
 
         // Chiffres
-        btn0.setOnClickListener { appendDigit('0') }
-        btn1.setOnClickListener { appendDigit('1') }
-        btn2.setOnClickListener { appendDigit('2') }
-        btn3.setOnClickListener { appendDigit('3') }
-        btn4.setOnClickListener { appendDigit('4') }
-        btn5.setOnClickListener { appendDigit('5') }
-        btn6.setOnClickListener { appendDigit('6') }
-        btn7.setOnClickListener { appendDigit('7') }
-        btn8.setOnClickListener { appendDigit('8') }
-        btn9.setOnClickListener { appendDigit('9') }
+        btn0.setOnClickListener { playGoop(); appendDigit('0') }
+        btn1.setOnClickListener { playGoop(); appendDigit('1') }
+        btn2.setOnClickListener { playGoop(); appendDigit('2') }
+        btn3.setOnClickListener { playGoop(); appendDigit('3') }
+        btn4.setOnClickListener { playGoop(); appendDigit('4') }
+        btn5.setOnClickListener { playGoop(); appendDigit('5') }
+        btn6.setOnClickListener { playGoop(); appendDigit('6') }
+        btn7.setOnClickListener { playGoop(); appendDigit('7') }
+        btn8.setOnClickListener { playGoop(); appendDigit('8') }
+        btn9.setOnClickListener { playGoop(); appendDigit('9') }
 
         // Virgule
-        btnComma.setOnClickListener { addComma() }
+        btnComma.setOnClickListener { playGoop(); addComma() }
 
-        // OK : uniquement si montant > 0 ET unité sélectionnée ET montant (en K) <= moneyK
+        // OK : jouer "congrats" puis terminer
         btnOk.setOnClickListener {
-            if (!btnOk.isEnabled) return@setOnClickListener
+            if (!btnOk.isEnabled) {
+                // si tu veux un feedback quand OK est désactivé, tu peux jouer goop ici :
+                // playGoop()
+                return@setOnClickListener
+            }
             val valueStr = buffer.toString()
             val unit = selectedUnit ?: return@setOnClickListener
             val millions = toMillionsForResult(valueStr, unit)
@@ -286,10 +357,15 @@ class PlayerMenuPropertiesBuyActivity : AppCompatActivity() {
                 putExtra(EXTRA_PLAYER_INDEX, playerIndex)
                 putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
             }
-            setResult(RESULT_OK, data)
-            finish()
+
+            // joue le son, puis setResult + finish()
+            playCongratsThen {
+                setResult(RESULT_OK, data)
+                finish()
+            }
         }
     }
+
 
     // --- Edition ---
 
