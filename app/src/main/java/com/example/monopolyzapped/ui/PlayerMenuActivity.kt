@@ -40,6 +40,7 @@ class PlayerMenuActivity : AppCompatActivity() {
 
     private lateinit var btnProprietes: ImageButton
     private lateinit var btnPayerLoyer: ImageButton
+    private lateinit var btnDepart: ImageButton
 
     // State
     private var players = arrayListOf<Player>()
@@ -80,6 +81,7 @@ class PlayerMenuActivity : AppCompatActivity() {
         // Exemple: val btnProprietes: ImageButton = findViewById(R.id.btnProprietes)
         btnProprietes = findViewById(R.id.btnProprietes)
         btnPayerLoyer = findViewById(R.id.btnPayerLoyer)
+        btnDepart = findViewById(R.id.btnDepart)
     }
 
     private fun paintHeader(p: Player) {
@@ -134,6 +136,20 @@ class PlayerMenuActivity : AppCompatActivity() {
                 // propage la nav comme d’habitude
                 putParcelableArrayListExtra(NavKeys.PLAYERS, players)
                 putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+            }
+            startActivity(intent)
+        }
+
+        btnDepart.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuStartCardScanActivity::class.java).apply {
+                putExtra(EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
             }
             startActivity(intent)
         }
