@@ -39,6 +39,7 @@ class PlayerMenuActivity : AppCompatActivity() {
     // Inside-grid buttons
 
     private lateinit var btnProprietes: ImageButton
+    private lateinit var btnPayerLoyer: ImageButton
 
     // State
     private var players = arrayListOf<Player>()
@@ -78,6 +79,7 @@ class PlayerMenuActivity : AppCompatActivity() {
         // Les 12 boutons de la grille existent aussi (ids dans le layout), on les pluggera plus tard.
         // Exemple: val btnProprietes: ImageButton = findViewById(R.id.btnProprietes)
         btnProprietes = findViewById(R.id.btnProprietes)
+        btnPayerLoyer = findViewById(R.id.btnPayerLoyer)
     }
 
     private fun paintHeader(p: Player) {
@@ -124,6 +126,18 @@ class PlayerMenuActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+
+        // … dans onCreate()
+        btnPayerLoyer.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerPayRentCardScanActivity::class.java).apply {
+                // propage la nav comme d’habitude
+                putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+            }
+            startActivity(intent)
+        }
+
     }
 
 
