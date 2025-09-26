@@ -23,6 +23,7 @@ import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.round
 
+
 class PlayerPayRentCardScanActivity : AppCompatActivity() {
 
     enum class CardColor { ORANGE, BLEUE, ROSE, VERTE }
@@ -103,20 +104,33 @@ class PlayerPayRentCardScanActivity : AppCompatActivity() {
         btnBack.visibility = if (showBack) View.VISIBLE else View.GONE
         if (showBack) btnBack.bindClickBackWithPressAndSound { finish() }
 
-        // Récup nav (ONLY EXTRA_CURRENT_INDEX)
+        // --- Récup nav ---
+        // Players (compat SDK 33+)
         val players: ArrayList<Player> = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableArrayListExtra(NavKeys.PLAYERS, Player::class.java) ?: arrayListOf()
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableArrayListExtra<Player>(NavKeys.PLAYERS) ?: arrayListOf()
         }
-        val currentIndex = intent.getIntExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, 1)
 
+        // Indice du tour (0-based) envoyé par PlayerMenuActivity
+        val turnIndex0 = intent.getIntExtra(PlayerMenuActivity.EXTRA_TURN_INDEX, -1)
+
+        // Fallback: si jamais l’extra n’est pas là, on retombe sur l’ancien CURRENT_INDEX (1-based)
+        val effectiveIndex0 = when {
+            turnIndex0 >= 0 -> turnIndex0
+            else -> {
+                val idx1 = intent.getIntExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, 1)
+                idx1 - 1
+            }
+        }.coerceIn(0, (players.size - 1).coerceAtLeast(0))
+
+        // Alimente les globals et le joueur courant
         playersGlobal = players
         totalPlayersGlobal = players.size
-        currentIndexGlobal = currentIndex
-        firstPlayerIndexGlobal = (currentIndex - 1).coerceIn(0, (players.size - 1).coerceAtLeast(0))
-        val currentPlayer = players.getOrNull(firstPlayerIndexGlobal)
+        firstPlayerIndexGlobal = effectiveIndex0               // 0-based (attendu par GameMainMenuActivity)
+        currentIndexGlobal = effectiveIndex0 + 1               // miroir 1-based si besoin en aval
+        val currentPlayer = players.getOrNull(effectiveIndex0)
         currentPlayerGlobal = currentPlayer
 
         // Montant optionnel (non affiché ici)
@@ -133,6 +147,7 @@ class PlayerPayRentCardScanActivity : AppCompatActivity() {
             tvPlayerMoney.text = ""
             tvScanStatus.text = "Scannez la carte du joueur pour payer le loyer."
         }
+
 
         // Touch: 2 doigts dans coins
         root.setOnTouchListener { _, ev ->
@@ -219,25 +234,18 @@ class PlayerPayRentCardScanActivity : AppCompatActivity() {
         playSuccess()
 
         handler.postDelayed({
-            val payerActor = colorNameToTransferIndex(expected)
-            val receiverActor = PlayerTransactionAnimationActivity.ACTOR_BANK
-            val amountLabel = if (amountKGlobal > 0.0)
-                "Paiement du loyer... ${formatMoneyK(amountKGlobal)}"
-            else
-                "Paiement du loyer..."
-
-            val intentAnim = Intent(this, PlayerTransactionAnimationActivity::class.java).apply {
-                putExtra(PlayerTransactionAnimationActivity.EXTRA_AMOUNT_LABEL, amountLabel)
-                putExtra(PlayerTransactionAnimationActivity.EXTRA_AMOUNT_K, amountKGlobal)
-                putExtra(PlayerTransactionAnimationActivity.EXTRA_PAYER_ACTOR, payerActor)
-                putExtra(PlayerTransactionAnimationActivity.EXTRA_RECEIVER_ACTOR, receiverActor)
-
+            val intentNext = Intent(this, PlayerPayRentEnterAmountActivity::class.java).apply {
                 putParcelableArrayListExtra(NavKeys.PLAYERS, playersGlobal)
+
+                // indices/navigation
                 putExtra(GameMainMenuActivity.EXTRA_FIRST_PLAYER_INDEX, firstPlayerIndexGlobal)
+                putExtra(PlayerMenuActivity.EXTRA_TURN_INDEX, firstPlayerIndexGlobal)
+                putExtra(PlayerMenuActivity.EXTRA_PLAYER_INDEX, firstPlayerIndexGlobal)
+
                 putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, totalPlayersGlobal)
                 putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, currentIndexGlobal)
             }
-            startActivity(intentAnim)
+            startActivity(intentNext)
             finish()
         }, 1000L)
     }

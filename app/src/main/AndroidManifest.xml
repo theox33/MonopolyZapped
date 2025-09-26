@@ -50,6 +50,8 @@
         <activity android:name=".ui.PlayerPayToBankCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerTransactionAnimationActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerPayRentCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerPayRentEnterAmountActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerReceiveRentCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
 
 
         <!-- MainActivity (ou MainMenuActivity plus tard) -->

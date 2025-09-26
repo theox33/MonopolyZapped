@@ -133,9 +133,7 @@ class PlayerMenuActivity : AppCompatActivity() {
             val intent = Intent(this, PlayerPayRentCardScanActivity::class.java).apply {
                 // propage la nav comme d’habitude
                 putParcelableArrayListExtra(NavKeys.PLAYERS, players)
-                putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, currentTurnIndex)
-                putExtra(PlayerPayToBankCardScanActivity.EXTRA_DEBUG_OVERLAY, true)
-                putExtra(PlayerPayToBankCardScanActivity.EXTRA_SHOW_BACK, true)
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
             }
             startActivity(intent)
         }
