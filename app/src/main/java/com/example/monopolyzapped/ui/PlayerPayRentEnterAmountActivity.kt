@@ -381,14 +381,14 @@ class PlayerPayRentEnterAmountActivity : AppCompatActivity() {
 
             // 3) Joue le son "congrats", puis lance l’activité de scan/validation
             playCongratsThen {
-                val i = Intent(this, PlayerPayToBankCardScanActivity::class.java).apply {
+                val i = Intent(this, PlayerReceiveRentCardScanActivity::class.java).apply {
                     putParcelableArrayListExtra(NavKeys.PLAYERS, players)
                     putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, players.size)
-                    // PlayerPayToBankCardScanActivity attend un index 1-based
+                    // PlayerReceiveRentCardScanActivity attend un index 1-based pour le joueur courant (payeur)
                     putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, playerIndex + 1)
-                    putExtra(PlayerPayToBankCardScanActivity.EXTRA_AMOUNT_K, amountK)
-                    putExtra(PlayerPayToBankCardScanActivity.EXTRA_SHOW_BACK, true)
-                    putExtra(PlayerPayToBankCardScanActivity.EXTRA_DEBUG_OVERLAY, true)
+                    putExtra(PlayerReceiveRentCardScanActivity.EXTRA_AMOUNT_K, amountK)
+                    putExtra(PlayerReceiveRentCardScanActivity.EXTRA_SHOW_BACK, true)
+                    putExtra(PlayerReceiveRentCardScanActivity.EXTRA_DEBUG_OVERLAY, true)
                 }
                 payScanLauncher.launch(i)
             }
