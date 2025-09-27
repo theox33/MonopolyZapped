@@ -121,6 +121,20 @@ class PlayerMenuPropertiesActivity : AppCompatActivity() {
             }
             buyLauncher.launch(intent)
         }
+
+        btnMortgage.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuPropertiesSellActivity::class.java).apply {
+                putExtra(PlayerMenuPropertiesSellActivity.EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(PlayerMenuPropertiesSellActivity.EXTRA_TURN_INDEX, currentTurnIndex)
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
     }
 
     private fun toast(msg: String) =

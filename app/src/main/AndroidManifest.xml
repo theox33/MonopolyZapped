@@ -54,7 +54,7 @@
         <activity android:name=".ui.PlayerReceiveRentCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuStartCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuHousesActivity" android:exported="false" android:screenOrientation="landscape"/>
-
+        <activity android:name=".ui.PlayerMenuPropertiesSellActivity" android:exported="false" android:screenOrientation="landscape"/>
 
         <!-- MainActivity (ou MainMenuActivity plus tard) -->
         <activity
