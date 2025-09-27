@@ -3,17 +3,15 @@ package com.example.monopolyzapped.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.animation.DecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
-import com.example.monopolyzapped.ui.PlayerPayToBankCardScanActivity.Companion.EXTRA_AMOUNT_K
 import com.example.monopolyzapped.util.MoneyFormat
 
 class PlayerMenuActivity : AppCompatActivity() {
@@ -270,9 +268,39 @@ class PlayerMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
+        btnEndGame.bindClickWithPressAndSound { showEndGameDialog() }
     }
 
+    private fun showEndGameDialog() {
+        val message = """
+            Une partie de Monopoly se termine habituellement lorsqu'un joueur fait faillite.
+            Si vous ne voulez pas attendre jusque là, vous pouvez demander d'arrêter la partie et connaître le vainqueur.
+
+            Êtes-vous SÛR de vouloir terminer la partie maintenant ?
+        """.trimIndent()
+
+        AlertDialog.Builder(this)
+            .setTitle("Terminer la partie ?")
+            .setMessage(message)
+            .setNegativeButton("Annuler") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Confirmer") { _, _ ->
+                // Démarre l’activité suivante (placeholder à développer plus tard)
+                val intent = Intent(this, GameEndIntroActivity::class.java).apply {
+                    putExtra(EXTRA_PLAYER_INDEX, playerIndex)
+                    putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                    }
+                }
+                startActivity(intent)
+            }
+            .show()
+    }
 
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()

@@ -1,0 +1,44 @@
+<resources>
+    <!-- Monopoly Zapped (FR) - Prix des propriétés (M) et prix unitaire d'une maison (M)
+         Format: Nom | Achat(M) | Maison(M)
+         NB: Zapped = valeurs classiques ×10 (ex: 60→600, maison 50→500) -->
+    <string-array name="prop_prices_zapped_m">
+        <!-- Marron (maisons 500M) -->
+        <item>Boulevard de Belleville|600|500</item>
+        <item>Rue Lecourbe|600|500</item>
+
+        <!-- Bleu clair (maisons 500M) -->
+        <item>Rue de Vaugirard|1000|500</item>
+        <item>Rue de Courcelles|1000|500</item>
+        <item>Avenue de la République|1200|500</item>
+
+        <!-- Rose (maisons 1000M) -->
+        <item>Boulevard de la Villette|1400|1000</item>
+        <item>Avenue de Neuilly|1400|1000</item>
+        <item>Rue de Paradis|1600|1000</item>
+
+        <!-- Orange (maisons 1000M) -->
+        <item>Avenue Mozart|1800|1000</item>
+        <item>Boulevard Saint-Michel|1800|1000</item>
+        <item>Place Pigalle|2000|1000</item>
+
+        <!-- Rouge (maisons 1500M) -->
+        <item>Avenue Matignon|2200|1500</item>
+        <item>Boulevard Malesherbes|2200|1500</item>
+        <item>Avenue Henri-Martin|2400|1500</item>
+
+        <!-- Jaune (maisons 1500M) -->
+        <item>Faubourg Saint-Honoré|2600|1500</item>
+        <item>Place Vendôme|2600|1500</item>
+        <item>Rue de la Fayette|2800|1500</item>
+
+        <!-- Vert (maisons 2000M) -->
+        <item>Avenue de Breteuil|3000|2000</item>
+        <item>Avenue Foch|3000|2000</item>
+        <item>Boulevard des Capucines|3200|2000</item>
+
+        <!-- Bleu foncé (maisons 2000M) -->
+        <item>Avenue des Champs-Élysées|3500|2000</item>
+        <item>Rue de la Paix|4000|2000</item>
+    </string-array>
+</resources>
