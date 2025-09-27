@@ -104,7 +104,19 @@ class PlayerMenuPropertiesActivity : AppCompatActivity() {
 
         // Actions principales
         btnMortgage.bindClickWithPressAndSound   { toast("Hypothéquer (à venir)") }
-        btnUnmortgage.bindClickWithPressAndSound { toast("Lever hypothèque (à venir)") }
+        btnUnmortgage.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuPropertiesBuyActivity::class.java).apply {
+                putExtra(PlayerMenuPropertiesBuyActivity.EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(PlayerMenuPropertiesBuyActivity.EXTRA_TURN_INDEX, currentTurnIndex)
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            buyLauncher.launch(intent)
+        }
         btnAuction.bindClickWithPressAndSound    { toast("Mise aux enchères (à venir)") }
 
         // BUY -> ouvre l’écran de calculatrice puis récupère le résultat
