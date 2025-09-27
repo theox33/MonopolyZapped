@@ -55,6 +55,11 @@
         <activity android:name=".ui.PlayerMenuStartCardScanActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuHousesActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuPropertiesSellActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerMenuJailActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerMenuChanceAnimationActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerMenuChanceCardInstructionActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerMenuCommunityAnimationActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerMenuCommunityCardInstructionActivity" android:exported="false" android:screenOrientation="landscape"/>
 
         <!-- MainActivity (ou MainMenuActivity plus tard) -->
         <activity

@@ -45,6 +45,9 @@ class PlayerMenuActivity : AppCompatActivity() {
     private lateinit var btnDepart: ImageButton
     private lateinit var btnTaxeDeLuxe: ImageButton
     private lateinit var btnImpots: ImageButton
+    private lateinit var btnPrison: ImageButton
+    private lateinit var btnChance: ImageButton
+    private lateinit var btnCaisse: ImageButton
 
     // State
     private var players = arrayListOf<Player>()
@@ -89,6 +92,9 @@ class PlayerMenuActivity : AppCompatActivity() {
         btnDepart = findViewById(R.id.btnDepart)
         btnTaxeDeLuxe = findViewById(R.id.btnTaxeDeLuxe)
         btnImpots = findViewById(R.id.btnImpots)
+        btnPrison = findViewById(R.id.btnSortirPrison)
+        btnChance = findViewById(R.id.btnChance)
+        btnCaisse = findViewById(R.id.btnCaisse)
     }
 
     private fun paintHeader(p: Player) {
@@ -220,6 +226,51 @@ class PlayerMenuActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+        btnPrison.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuJailActivity::class.java).apply {
+                putExtra(PlayerMenuJailActivity.EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(PlayerMenuJailActivity.EXTRA_TURN_INDEX, currentTurnIndex)
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
+
+        btnChance.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuChanceAnimationActivity::class.java).apply {
+                putExtra(EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
+
+        btnCaisse.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuCommunityAnimationActivity::class.java).apply {
+                putExtra(EXTRA_PLAYER_INDEX, playerIndex)          // 0-based
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)       // 0-based
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
+
+
     }
 
 
