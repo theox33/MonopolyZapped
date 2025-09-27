@@ -39,6 +39,7 @@ class PlayerMenuActivity : AppCompatActivity() {
     // Inside-grid buttons
 
     private lateinit var btnProprietes: ImageButton
+    private lateinit var btnMaisons: ImageButton
     private lateinit var btnPayerLoyer: ImageButton
     private lateinit var btnDepart: ImageButton
 
@@ -80,6 +81,7 @@ class PlayerMenuActivity : AppCompatActivity() {
         // Les 12 boutons de la grille existent aussi (ids dans le layout), on les pluggera plus tard.
         // Exemple: val btnProprietes: ImageButton = findViewById(R.id.btnProprietes)
         btnProprietes = findViewById(R.id.btnProprietes)
+        btnMaisons = findViewById(R.id.btnMaisons)
         btnPayerLoyer = findViewById(R.id.btnPayerLoyer)
         btnDepart = findViewById(R.id.btnDepart)
     }
@@ -129,6 +131,19 @@ class PlayerMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnMaisons.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerMenuHousesActivity::class.java).apply {
+                putExtra(PlayerMenuHousesActivity.EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(PlayerMenuHousesActivity.EXTRA_TURN_INDEX, currentTurnIndex)
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
 
         // … dans onCreate()
         btnPayerLoyer.bindClickWithPressAndSound {

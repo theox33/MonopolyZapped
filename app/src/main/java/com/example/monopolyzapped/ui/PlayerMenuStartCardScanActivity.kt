@@ -44,7 +44,7 @@ class PlayerMenuStartCardScanActivity : AppCompatActivity() {
     private lateinit var ivChosenToken: ImageView
     private lateinit var tvScanStatus: TextView
 
-    // Nouveaux textes
+    // Textes haut
     private lateinit var tvPlayerName: TextView
     private lateinit var tvPlayerMoney: TextView
     private lateinit var tvAmountToPay: TextView
@@ -60,14 +60,14 @@ class PlayerMenuStartCardScanActivity : AppCompatActivity() {
     private lateinit var debugOverlay: DebugOverlayView
     private var debugEnabled = false
 
-    // mémoriser pour re-use lors du succès
+    // état global pour relancer l’anim
     private var amountKGlobal: Double = 0.0
     private var currentPlayerGlobal: Player? = null
 
     private var playersGlobal = arrayListOf<Player>()
     private var totalPlayersGlobal = 0
-    private var currentIndexGlobal = 1
-    private var firstPlayerIndexGlobal = 0 // <- index 0-based attendu par GameMainMenuActivity
+    private var playerIndexGlobal = 0          // index 0-based du joueur courant
+    private var currentTurnIndexGlobal = 0     // index 0-based pour GameMainMenuActivity
 
     private fun tokenToDrawable(token: String): Int = when (token) {
         "dog"  -> R.drawable.hasbro_token_dog
@@ -116,29 +116,35 @@ class PlayerMenuStartCardScanActivity : AppCompatActivity() {
         btnBack.visibility = if (showBack) View.VISIBLE else View.GONE
         if (showBack) btnBack.bindClickBackWithPressAndSound { finish() }
 
-        // --- Récup navigation + montant en K (compat SDK 33+) ---
+        // --- Récup navigation + indices 0-based envoyés par PlayerMenuActivity ---
         val players: ArrayList<Player> = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableArrayListExtra(NavKeys.PLAYERS, Player::class.java) ?: arrayListOf()
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableArrayListExtra<Player>(NavKeys.PLAYERS) ?: arrayListOf()
         }
-        val totalPlayers = intent.getIntExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, 2)
-        val currentIndex = intent.getIntExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, 1)
-        val currentPlayer = players.getOrNull(currentIndex - 1)
+        val playerIndex = intent.getIntExtra(PlayerMenuActivity.EXTRA_PLAYER_INDEX, 0) // 0-based
+        val currentTurnIndex = intent.getIntExtra(PlayerMenuActivity.EXTRA_TURN_INDEX, playerIndex) // 0-based
+        val currentPlayer = players.getOrNull(playerIndex)
 
         // Montant par défaut : 2 M = 2000 K (surchargable via EXTRA_AMOUNT_K)
         val amountK = intent.getDoubleExtra(EXTRA_AMOUNT_K, 2000.0)
 
-        // stock pour usage ultérieur
+        // Garde en global
         amountKGlobal = amountK
         currentPlayerGlobal = currentPlayer
 
-        // stocke aussi players + index
         playersGlobal = players
-        totalPlayersGlobal = totalPlayers
-        currentIndexGlobal = currentIndex
-        firstPlayerIndexGlobal = (currentIndex - 1).coerceIn(0, (players.size - 1).coerceAtLeast(0))
+        totalPlayersGlobal = players.size
+        playerIndexGlobal = playerIndex
+        currentTurnIndexGlobal = currentTurnIndex // déjà 0-based, pas de -1
+
+        // Sécurité : si données invalides, on sort proprement
+        if (playersGlobal.isEmpty() || playerIndexGlobal !in playersGlobal.indices) {
+            tvScanStatus.text = "Données joueur manquantes. Retour."
+            handler.postDelayed({ finish() }, 800L)
+            return
+        }
 
         // Affichages haut
         currentPlayer?.let { p ->
@@ -245,15 +251,13 @@ class PlayerMenuStartCardScanActivity : AppCompatActivity() {
 
                 // ➜ Propager la navigation (et l’index attendu par GameMainMenuActivity)
                 putParcelableArrayListExtra(NavKeys.PLAYERS, playersGlobal)
-                putExtra(GameMainMenuActivity.EXTRA_FIRST_PLAYER_INDEX, firstPlayerIndexGlobal)
+                putExtra(GameMainMenuActivity.EXTRA_FIRST_PLAYER_INDEX, currentTurnIndexGlobal)
 
-                // Optionnel: on peut aussi propager ces extras si réutilisés plus tard
-                putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, totalPlayersGlobal)
-                putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, currentIndexGlobal)
+                // Optionnel si réutilisé plus tard
+                // (on laisse tomber les extras PlayerSetupActivity qui n'ont plus de sens ici)
             }
             startActivity(intentAnim)
             finish()
-
         }, 1000L)
     }
 
@@ -312,7 +316,7 @@ class PlayerMenuStartCardScanActivity : AppCompatActivity() {
         } catch (_: Throwable) { /* noop */ }
     }
 
-    // --- Détection / aides (copié depuis PlayerCardScanActivity) ---
+    // --- Détection / aides ---
     private data class CardDetection(
         val color: CardColor,
         val distancePx: Float,
