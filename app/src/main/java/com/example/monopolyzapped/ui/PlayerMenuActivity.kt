@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
+import com.example.monopolyzapped.ui.PlayerPayToBankCardScanActivity.Companion.EXTRA_AMOUNT_K
 import com.example.monopolyzapped.util.MoneyFormat
 
 class PlayerMenuActivity : AppCompatActivity() {
@@ -42,6 +43,8 @@ class PlayerMenuActivity : AppCompatActivity() {
     private lateinit var btnMaisons: ImageButton
     private lateinit var btnPayerLoyer: ImageButton
     private lateinit var btnDepart: ImageButton
+    private lateinit var btnTaxeDeLuxe: ImageButton
+    private lateinit var btnImpots: ImageButton
 
     // State
     private var players = arrayListOf<Player>()
@@ -84,6 +87,8 @@ class PlayerMenuActivity : AppCompatActivity() {
         btnMaisons = findViewById(R.id.btnMaisons)
         btnPayerLoyer = findViewById(R.id.btnPayerLoyer)
         btnDepart = findViewById(R.id.btnDepart)
+        btnTaxeDeLuxe = findViewById(R.id.btnTaxeDeLuxe)
+        btnImpots = findViewById(R.id.btnImpots)
     }
 
     private fun paintHeader(p: Player) {
@@ -169,6 +174,52 @@ class PlayerMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnTaxeDeLuxe.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerPayToBankCardScanActivity::class.java).apply {
+                putExtra(EXTRA_PLAYER_INDEX, playerIndex)
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+
+                // ✅ send Double, and qualify the key
+                val amountK = 1000.0
+                putExtra(PlayerPayToBankCardScanActivity.EXTRA_AMOUNT_K, amountK)
+
+                // This screen still expects PlayerSetupActivity indices (1-based)
+                putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, playerIndex + 1)
+                putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, players.size)
+
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
+
+
+        btnImpots.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerPayToBankCardScanActivity::class.java).apply {
+                putExtra(PlayerMenuActivity.EXTRA_PLAYER_INDEX, playerIndex)          // optional if you refactor later
+                putExtra(PlayerMenuActivity.EXTRA_TURN_INDEX, currentTurnIndex)       // optional if you refactor later
+
+                // 🔑 use the correct key (qualify it) + send Double
+                val amountK = 2000.0
+                putExtra(PlayerPayToBankCardScanActivity.EXTRA_AMOUNT_K, amountK)
+
+                // This screen still reads PlayerSetupActivity’s CURRENT_INDEX (1-based)
+                putExtra(PlayerSetupActivity.EXTRA_CURRENT_INDEX, playerIndex + 1)
+                putExtra(PlayerSetupActivity.EXTRA_TOTAL_PLAYERS, players.size)
+
+                if (Build.VERSION.SDK_INT >= 33) {
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                } else {
+                    @Suppress("DEPRECATION")
+                    putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                }
+            }
+            startActivity(intent)
+        }
     }
 
 
