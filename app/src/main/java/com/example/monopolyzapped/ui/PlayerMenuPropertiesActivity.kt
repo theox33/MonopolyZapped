@@ -83,7 +83,7 @@ class PlayerMenuPropertiesActivity : AppCompatActivity() {
         headerName  = findViewById(R.id.headerName)
         headerMoney = findViewById(R.id.headerMoney)
 
-        btnMortgage   = findViewById(R.id.btnMortgage)
+        btnMortgage   = findViewById(R.id.btnMortgaged)
         btnUnmortgage = findViewById(R.id.btnUnmortgage)
         btnBuy        = findViewById(R.id.btnBuy)
         btnAuction    = findViewById(R.id.btnAuction)

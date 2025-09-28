@@ -295,7 +295,7 @@
     <!-- ===================== Centre ===================== -->
     <ImageView
         android:id="@+id/quadInfo"
-        android:layout_width="780px"
+        android:layout_width="wrap_content"
         android:layout_height="574px"
         android:adjustViewBounds="true"
         android:src="@drawable/hasbro_quadinfobankrupt"
@@ -322,51 +322,55 @@
 
     <ImageView
         android:id="@+id/propertyImage"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="140dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/bankrupt_property_card_0"
-        app:layout_constraintTop_toBottomOf="@id/centerTitle"
+        app:layout_constraintEnd_toEndOf="@id/quadInfo"
         app:layout_constraintStart_toStartOf="@id/quadInfo"
-        app:layout_constraintEnd_toEndOf="@id/quadInfo" />
+        app:layout_constraintTop_toBottomOf="@id/centerTitle" />
 
     <TextView
         android:id="@+id/propertyName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
         android:fontFamily="@font/kabel"
         android:gravity="center"
         android:text="Nom de la propriété"
+        android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/propertyImage"
+        app:layout_constraintBottom_toBottomOf="@+id/propertyImage"
+        app:layout_constraintEnd_toEndOf="@id/quadInfo"
         app:layout_constraintStart_toStartOf="@id/quadInfo"
-        app:layout_constraintEnd_toEndOf="@id/quadInfo" />
+        app:layout_constraintTop_toTopOf="@+id/propertyImage" />
 
     <!-- Bas gauche : Undo -->
     <ImageView
         android:id="@+id/btnUndo"
         android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="16dp"
         android:contentDescription="Annuler"
         android:src="@drawable/back_btn_half"
         app:layout_constraintBottom_toBottomOf="@id/quadInfo"
-        app:layout_constraintStart_toStartOf="@id/quadInfo" />
+        app:layout_constraintStart_toStartOf="@id/quadInfo"
+        app:layout_constraintTop_toBottomOf="@+id/propertyImage" />
 
     <!-- Bas centre : Banque -->
     <ImageView
         android:id="@+id/ivBank"
         android:layout_width="92dp"
         android:layout_height="92dp"
-        android:layout_marginBottom="8dp"
         android:contentDescription="Banque (personne)"
         android:src="@drawable/bank"
         app:layout_constraintBottom_toBottomOf="@id/quadInfo"
+        app:layout_constraintEnd_toEndOf="@id/quadInfo"
         app:layout_constraintStart_toStartOf="@id/quadInfo"
-        app:layout_constraintEnd_toEndOf="@id/quadInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/propertyImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

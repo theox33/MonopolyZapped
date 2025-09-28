@@ -63,6 +63,7 @@
         <activity android:name=".ui.WhoOwnsWhatActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.GameEndIntroActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.ReadyToFindOutActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.PlayerOwnsPropertyActivity" android:exported="false" android:screenOrientation="landscape"/>
 
         <!-- MainActivity (ou MainMenuActivity plus tard) -->
         <activity

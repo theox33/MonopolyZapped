@@ -1,4 +1,3 @@
-// WhoOwnsWhatActivity.kt
 package com.example.monopolyzapped.ui
 
 import android.content.Intent
@@ -17,17 +16,22 @@ import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 class WhoOwnsWhatActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_TURN_INDEX = "turn_index"
 
-        // ➜ contrat avec PlayerOwnsPropertyActivity (à implémenter plus tard)
+        // ➜ contrat I/O avec PlayerOwnsPropertyActivity
         const val EXTRA_PROP_NAME = "prop_name"
         const val EXTRA_PROP_PRICE_K = "prop_price_k"
         const val EXTRA_HOUSE_PRICE_K = "house_price_k"
+        const val EXTRA_GROUP_INDEX = "group_index" // ✅ nouveau
+
+        // résultats renvoyés par PlayerOwnsPropertyActivity
         const val RESULT_HOUSES_COUNT = "houses_count"
+        const val RESULT_ADDED_AMOUNT_K = "added_amount_k"
     }
 
     // --- Data ---
@@ -43,7 +47,8 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
     private data class Assignment(
         val propertyIndex: Int,
         val ownerPlayerIndex: Int?, // null => banque
-        val houses: Int
+        val houses: Int,
+        val amountAddedK: Double    // 0 si banque
     )
 
     private var players = arrayListOf<Player>()
@@ -83,7 +88,7 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
     private val btnUndo by lazy { v<View>(R.id.btnUndo) }
     private val ivBank by lazy { v<ImageView>(R.id.ivBank) }
 
-    // --- helpers drawables (reprise de GameMainMenuActivity, sans l’argent) ---
+    // --- helpers drawables ---
 
     private fun Player.tokenDrawableNoBg(): Int = when (token) {
         "dog"  -> R.drawable.hasbro_token_dog
@@ -122,22 +127,19 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
         else -> R.drawable.bankrupt_property_card_8
     }
 
-    // Map “Groupe” (texte dans properties.xml) -> index 0..8
     private fun groupIndexOf(name: String): Int = when (name.trim().lowercase()) {
-        "marron", "brown"              -> 0
-        "bleu clair", "light blue"     -> 1
-        "rose", "pink"                 -> 2
-        "orange"                       -> 3
-        "rouge", "red"                 -> 4
-        "jaune", "yellow"              -> 5
-        "vert", "verte", "green"       -> 6
-        "bleu", "bleu foncé", "dark blue" -> 7
-        // gares/compagnies ou autres → 8 (dernière carte générique)
+        "marron", "brown"                    -> 0
+        "bleu clair", "light blue"           -> 1
+        "rose", "pink"                       -> 2
+        "orange"                             -> 3
+        "rouge", "red"                       -> 4
+        "jaune", "yellow"                    -> 5
+        "vert", "verte", "green"             -> 6
+        "bleu", "bleu foncé", "dark blue"    -> 7
         else -> 8
     }
 
-    // --- parsing properties.xml ---
-
+    // --- parsing properties.xml (res/values/properties.xml) ---
 
     private fun loadPropertiesFromValues() {
         try {
@@ -149,16 +151,13 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
                     val n = parts[1]
                     val buyK = parts[2].replace(",", ".").toDoubleOrNull() ?: 0.0
                     val houseK = parts[3].replace(",", ".").toDoubleOrNull() ?: 0.0
-
-                    // ✅ si c’est un chiffre (0..8), on le prend tel quel, sinon on mappe via groupIndexOf()
                     val gIndex = gRaw.toIntOrNull()?.coerceIn(0, 8) ?: groupIndexOf(gRaw)
-
                     properties += MonopolyProperty(
-                        groupName = gRaw,           // (facultatif, conservé tel quel)
+                        groupName = gRaw,
                         name = n,
                         priceK = buyK,
                         housePriceK = houseK,
-                        groupIndex = gIndex        // ✅ bon index
+                        groupIndex = gIndex
                     )
                 }
             }
@@ -166,7 +165,6 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
             Toast.makeText(this, "Impossible de lire res/values/properties.xml", Toast.LENGTH_LONG).show()
         }
     }
-
 
     // --- UI binding ---
 
@@ -206,24 +204,26 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
     }
 
     private fun refreshCenterForCurrentProperty() {
-        if (currentPropIndex !in properties.indices) {
-            goToReadyToFindOut()
-            return
+        if (properties.isEmpty()) {
+            Toast.makeText(this, "Aucune propriété chargée.", Toast.LENGTH_LONG).show()
+            finish(); return
         }
+        if (currentPropIndex >= properties.size) {
+            goToReadyToFindOut(); return
+        }
+
         val prop = properties[currentPropIndex]
         centerTitle.text = "Qui possède ?"
         propertyName.text = prop.name
         propertyImage.setImageResource(bankruptCardForGroupIndex(prop.groupIndex))
 
-        // bouton banque
+        // banque : pas d’argent, on passe à la suivante
         ivBank.setOnClickListener {
-            // propriété à la banque → on avance
-            history.addLast(Assignment(currentPropIndex, ownerPlayerIndex = null, houses = 0))
+            history.addLast(Assignment(currentPropIndex, ownerPlayerIndex = null, houses = 0, amountAddedK = 0.0))
             currentPropIndex++
             refreshCenterForCurrentProperty()
         }
 
-        // bouton undo
         btnUndo.setOnClickListener { performUndo() }
     }
 
@@ -233,16 +233,14 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
             return
         }
 
-        // Si on avait attribué à un joueur avec ajout d’argent, il faut l’enlever
-        val prop = properties[last.propertyIndex]
         last.ownerPlayerIndex?.let { pIdx ->
-            if (pIdx in players.indices) {
-                val deltaK = prop.priceK + last.houses * prop.housePriceK
-                players[pIdx] = players[pIdx].copy(money = max(0.0, players[pIdx].money - deltaK).toInt())
+            if (pIdx in players.indices && last.amountAddedK != 0.0) {
+                val currentK = players[pIdx].money.toDouble()
+                val newMoneyK = (currentK - last.amountAddedK).coerceAtLeast(0.0)
+                players[pIdx] = players[pIdx].copy(money = newMoneyK.roundToInt())
             }
         }
 
-        // Revenir sur cette propriété
         currentPropIndex = last.propertyIndex
         refreshCenterForCurrentProperty()
     }
@@ -252,23 +250,35 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
     private val pickHousesLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        // Attendu : resultCode == RESULT_OK, intent with RESULT_HOUSES_COUNT (Int)
-        val houses = result.data?.getIntExtra(RESULT_HOUSES_COUNT, 0) ?: 0
-        val pIdx = result.data?.getIntExtra("owner_index", -1) ?: -1
-        val propIdx = result.data?.getIntExtra("property_index", currentPropIndex) ?: currentPropIndex
+        val data = result.data
+        val houses = data?.getIntExtra(RESULT_HOUSES_COUNT, 0) ?: 0
+        val pIdx = data?.getIntExtra("owner_index", -1) ?: -1
+        val propIdx = data?.getIntExtra("property_index", currentPropIndex) ?: currentPropIndex
+        val addedAmountK = data?.getDoubleExtra(RESULT_ADDED_AMOUNT_K, 0.0) ?: 0.0
 
-        if (propIdx in properties.indices && pIdx in players.indices) {
-            val prop = properties[propIdx]
-            val deltaK = prop.priceK + houses * prop.housePriceK
-            players[pIdx] = players[pIdx].copy(money = (players[pIdx].money + deltaK).toInt())
+        // récupère la liste players mise à jour par l'activité fille (important)
+        val returnedPlayers: ArrayList<Player>? = if (Build.VERSION.SDK_INT >= 33) {
+            data?.getParcelableArrayListExtra(NavKeys.PLAYERS, Player::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            data?.getParcelableArrayListExtra(NavKeys.PLAYERS)
+        }
+        if (returnedPlayers != null && returnedPlayers.isNotEmpty()) {
+            players = returnedPlayers
+        }
 
-            history.addLast(Assignment(propIdx, ownerPlayerIndex = pIdx, houses = houses))
+        if (propIdx in properties.indices && (pIdx in players.indices || pIdx == -1)) {
+            // On n’ajoute pas d’argent ici : déjà fait dans PlayerOwnsPropertyActivity
+            if (pIdx != -1) {
+                history.addLast(Assignment(propIdx, ownerPlayerIndex = pIdx, houses = houses, amountAddedK = addedAmountK))
+            } else {
+                history.addLast(Assignment(propIdx, ownerPlayerIndex = null, houses = 0, amountAddedK = 0.0))
+            }
 
-            // Passe à la suivante
             currentPropIndex = propIdx + 1
             refreshCenterForCurrentProperty()
         } else {
-            // Si pas de données, on ne bouge pas et on réaffiche
+            // Pas de données valides : rester sur place
             refreshCenterForCurrentProperty()
         }
     }
@@ -277,11 +287,11 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
         if (currentPropIndex !in properties.indices) return
         val prop = properties[currentPropIndex]
 
-        // Lance l’activité (à coder plus tard) qui renverra le nb de maisons
         val intent = Intent(this, PlayerOwnsPropertyActivity::class.java).apply {
             putExtra(EXTRA_PROP_NAME, prop.name)
             putExtra(EXTRA_PROP_PRICE_K, prop.priceK)
             putExtra(EXTRA_HOUSE_PRICE_K, prop.housePriceK)
+            putExtra(EXTRA_GROUP_INDEX, prop.groupIndex) // ✅ pour l’image
             putExtra("owner_index", ownerIndex)
             putExtra("property_index", currentPropIndex)
             if (Build.VERSION.SDK_INT >= 33) {
@@ -324,16 +334,12 @@ class WhoOwnsWhatActivity : AppCompatActivity() {
         }
         if (players.isEmpty()) { Toast.makeText(this, "Aucun joueur reçu.", Toast.LENGTH_LONG).show(); finish(); return }
 
-        // ✅ CHARGER LES PROPRIÉTÉS AVANT TOUT
         properties.clear()
         loadPropertiesFromValues()
         if (properties.isEmpty()) { Toast.makeText(this, "Aucune propriété dans res/values/properties.xml", Toast.LENGTH_LONG).show(); finish(); return }
 
-        // ✅ (re)positionner l’index
         currentPropIndex = 0
-
         bindAllTiles()
         refreshCenterForCurrentProperty()
     }
-
 }
