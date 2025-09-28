@@ -2,29 +2,150 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundtech_half">
+    android:background="@drawable/celebration_background">
 
-    <TextView
-        android:id="@+id/tvReady"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Prêt ?"
-        android:textSize="22sp"
-        android:padding="24dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <Button
-        android:id="@+id/btnContinue"
+    <ImageView
+        android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continuer"
-        app:layout_constraintTop_toBottomOf="@id/tvReady"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/next_button"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/podium_bg1" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/space"
+        app:srcCompat="@drawable/podium1" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/thirdPlayerToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintBottom_toTopOf="@+id/thirdPlayerMoney"
+        app:layout_constraintEnd_toEndOf="@+id/thirdPlayerMoney"
+        app:layout_constraintStart_toStartOf="@+id/thirdPlayerMoney"
+        app:srcCompat="@drawable/pachinko_car" />
+
+    <ImageView
+        android:id="@+id/fourthPlayerToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintBottom_toTopOf="@+id/fourthPlayerMoney"
+        app:layout_constraintEnd_toEndOf="@+id/fourthPlayerMoney"
+        app:layout_constraintStart_toStartOf="@+id/fourthPlayerMoney"
+        app:srcCompat="@drawable/pachinko_car" />
+
+    <TextView
+        android:id="@+id/secondPlayerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="210dp"
+        android:fontFamily="@font/kabel"
+        android:text="0M"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toStartOf="@+id/firstPlayerMoney"
+        app:layout_constraintTop_toBottomOf="@+id/firstPlayerMoney" />
+
+    <TextView
+        android:id="@+id/thirdPlayerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="150dp"
+        android:fontFamily="@font/kabel"
+        android:text="0M"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        app:layout_constraintStart_toEndOf="@+id/firstPlayerMoney"
+        app:layout_constraintTop_toBottomOf="@+id/firstPlayerMoney" />
+
+    <TextView
+        android:id="@+id/fourthPlayerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="280dp"
+        android:fontFamily="@font/kabel"
+        android:text="0M"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/firstPlayerMoney"
+        app:layout_constraintTop_toBottomOf="@+id/firstPlayerMoney" />
+
+    <TextView
+        android:id="@+id/firstPlayerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/kabel"
+        android:text="0M"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <ImageView
+        android:id="@+id/secondPlayerToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintBottom_toTopOf="@+id/secondPlayerMoney"
+        app:layout_constraintEnd_toEndOf="@+id/secondPlayerMoney"
+        app:layout_constraintStart_toStartOf="@+id/secondPlayerMoney"
+        app:srcCompat="@drawable/pachinko_car" />
+
+    <ImageView
+        android:id="@+id/firstPlayerToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintBottom_toTopOf="@+id/firstPlayerMoney"
+        app:layout_constraintEnd_toEndOf="@+id/firstPlayerMoney"
+        app:layout_constraintStart_toStartOf="@+id/firstPlayerMoney"
+        app:srcCompat="@drawable/pachinko_car" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

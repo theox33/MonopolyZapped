@@ -46,6 +46,7 @@ class PlayerMenuActivity : AppCompatActivity() {
     private lateinit var btnPrison: ImageButton
     private lateinit var btnChance: ImageButton
     private lateinit var btnCaisse: ImageButton
+    private lateinit var btnPayerJoueur: ImageButton
 
     // State
     private var players = arrayListOf<Player>()
@@ -93,6 +94,7 @@ class PlayerMenuActivity : AppCompatActivity() {
         btnPrison = findViewById(R.id.btnSortirPrison)
         btnChance = findViewById(R.id.btnChance)
         btnCaisse = findViewById(R.id.btnCaisse)
+        btnPayerJoueur = findViewById(R.id.btnPayerJoueur)
     }
 
     private fun paintHeader(p: Player) {
@@ -156,6 +158,15 @@ class PlayerMenuActivity : AppCompatActivity() {
 
         // … dans onCreate()
         btnPayerLoyer.bindClickWithPressAndSound {
+            val intent = Intent(this, PlayerPayRentCardScanActivity::class.java).apply {
+                // propage la nav comme d’habitude
+                putParcelableArrayListExtra(NavKeys.PLAYERS, players)
+                putExtra(EXTRA_TURN_INDEX, currentTurnIndex)
+            }
+            startActivity(intent)
+        }
+
+        btnPayerJoueur.bindClickWithPressAndSound {
             val intent = Intent(this, PlayerPayRentCardScanActivity::class.java).apply {
                 // propage la nav comme d’habitude
                 putParcelableArrayListExtra(NavKeys.PLAYERS, players)
