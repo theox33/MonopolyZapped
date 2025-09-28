@@ -60,6 +60,9 @@
         <activity android:name=".ui.PlayerMenuChanceCardInstructionActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuCommunityAnimationActivity" android:exported="false" android:screenOrientation="landscape"/>
         <activity android:name=".ui.PlayerMenuCommunityCardInstructionActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.WhoOwnsWhatActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.GameEndIntroActivity" android:exported="false" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.ReadyToFindOutActivity" android:exported="false" android:screenOrientation="landscape"/>
 
         <!-- MainActivity (ou MainMenuActivity plus tard) -->
         <activity
