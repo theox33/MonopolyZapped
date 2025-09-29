@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundtech_half"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- ===== Header ===== -->
+    <ImageView
+        android:id="@+id/btnBack2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/back_btn_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/headerBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/headerToken"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="@id/headerBg"
+        app:layout_constraintTop_toTopOf="@id/headerBg"
+        app:layout_constraintBottom_toBottomOf="@id/headerBg"
+        android:layout_margin="24dp" />
+
+    <TextView
+        android:id="@+id/headerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nom"
+        android:textStyle="bold"
+        android:textSize="36sp"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/kabel_thin"
+        app:layout_constraintStart_toEndOf="@id/headerToken"
+        app:layout_constraintTop_toTopOf="@id/headerBg"
+        app:layout_constraintBottom_toBottomOf="@id/headerBg"
+        app:layout_constraintEnd_toStartOf="@id/headerMoney"
+        android:layout_margin="24dp" />
+
+    <TextView
+        android:id="@+id/headerMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:fontFamily="@font/kabel_thin"
+        android:text="1500M"
+        android:visibility="invisible"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/headerBg"
+        app:layout_constraintEnd_toEndOf="@id/headerBg"
+        app:layout_constraintTop_toTopOf="@id/headerBg" />
+
+    <!-- ===== Grille centrale ===== -->
+    <GridLayout
+        android:id="@+id/actionsGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="64dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="32dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:rowCount="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerBg">
+
+        <ImageButton
+            android:id="@+id/btn0"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="55dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/property_buttons_0_houses" />
+
+        <ImageButton
+            android:id="@+id/btn1"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="55dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/property_buttons_1_houses" />
+
+        <ImageButton
+            android:id="@+id/btn2"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="55dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/property_buttons_2_houses" />
+
+        <ImageButton
+            android:id="@+id/btn3"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="55dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/property_buttons_3_houses" />
+
+        <ImageButton
+            android:id="@+id/btn4"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="55dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/property_buttons_4_houses" />
+
+        <ImageButton
+            android:id="@+id/btn5"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="55dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/property_buttons_5_houses" />
+    </GridLayout>
+
+    <ImageButton
+        android:id="@+id/btnMortgaged"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="55dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/property_buttons_mortgaged"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actionsGrid" />
+
+    <TextView
+        android:id="@+id/labelNbProperties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/kabel"
+        android:text="Nombre de bâtiments"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/actionsGrid"
+        app:layout_constraintEnd_toEndOf="@+id/actionsGrid"
+        app:layout_constraintStart_toStartOf="@+id/actionsGrid"
+        app:layout_constraintTop_toBottomOf="@+id/headerBg" />
+
+    <ImageView
+        android:id="@+id/propertyImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/actionsGrid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBg"
+        app:srcCompat="@drawable/hl_card0" />
+
+    <TextView
+        android:id="@+id/propertyName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="580dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/kabel"
+        android:text="Avenue des Champs-Élysées"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/propertyImage"
+        app:layout_constraintEnd_toEndOf="@+id/propertyImage"
+        app:layout_constraintStart_toStartOf="@+id/propertyImage"
+        app:layout_constraintTop_toBottomOf="@+id/headerBg" />
+
+    <TextView
+        android:id="@+id/propertyAndHousesValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/kabel"
+        android:text="+0M"
+        android:textColor="@color/black"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="@+id/propertyImage"
+        app:layout_constraintStart_toStartOf="@+id/propertyImage"
+        app:layout_constraintTop_toBottomOf="@+id/propertyName" />
+
+    <!-- ===== Icônes périphériques ===== -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
