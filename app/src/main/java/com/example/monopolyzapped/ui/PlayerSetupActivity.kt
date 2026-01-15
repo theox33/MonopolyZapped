@@ -12,7 +12,7 @@ import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 
-class PlayerSetupActivity : AppCompatActivity() {
+class PlayerSetupActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_TOTAL_PLAYERS = "total_players"

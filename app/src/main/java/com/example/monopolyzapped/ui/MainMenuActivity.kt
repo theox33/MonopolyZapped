@@ -3,12 +3,10 @@ package com.example.monopolyzapped.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.R
-import android.media.MediaPlayer
 
 
-class MainMenuActivity : AppCompatActivity() {
+class MainMenuActivity : BaseFlippableActivity() {
 
     private fun View.fadeIn(delay: Long, dy: Float = 0f, duration: Long = 450) {
         alpha = 0f

@@ -11,7 +11,7 @@ import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 
-class GameEndIntroActivity : AppCompatActivity() {
+class GameEndIntroActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_PLAYER_INDEX = "player_index"

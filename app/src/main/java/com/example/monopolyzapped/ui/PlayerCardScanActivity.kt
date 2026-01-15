@@ -15,13 +15,13 @@ import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import kotlin.math.hypot
 
-class PlayerCardScanActivity : AppCompatActivity() {
+
+class PlayerCardScanActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_SHOW_BACK = "show_back"

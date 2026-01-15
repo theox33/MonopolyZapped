@@ -11,50 +11,41 @@ import android.os.Build
 import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.NavKeys
 
-class PlayerMenuChanceCardInstructionActivity : AppCompatActivity() {
+class PlayerMenuChanceCardInstructionActivity : BaseFlippableActivity() {
 
     // --- Mapping images de fond par ID de carte ---
     private val bgById: Map<Int, Int> by lazy {
         mapOf(
-            1 to R.drawable.card_boardwalk_fr,
-            2 to R.drawable.card_fee,
-            3 to R.drawable.card_railroad,
-            4 to R.drawable.card_jail,
-            5 to R.drawable.card_go_fr,
-            6 to R.drawable.card_leaping,
-            7 to R.drawable.card_payme,
-            8 to R.drawable.card_leaning,
-            9 to R.drawable.card_fee,
+            1 to R.drawable.card_running,
+            2 to R.drawable.card_payme,
+            3 to R.drawable.card_fee,
+            4 to R.drawable.card_fee,
+            5 to R.drawable.card_railroad,
+            6 to R.drawable.card_railroad,
+            7 to R.drawable.card_boardwalk_fr,
+            8 to R.drawable.card_railroad,
+            9 to R.drawable.card_leaping,
             10 to R.drawable.card_running,
-            11 to R.drawable.card_railroad,
-            12 to R.drawable.card_repair,
-            13 to R.drawable.card_leaping,
-            14 to R.drawable.card_running,
-            15 to R.drawable.card_running,
-            16 to R.drawable.card_railroad,
-            17 to R.drawable.card_fee,
-            18 to R.drawable.card_beauty,
-            19 to R.drawable.card_pointing,
-            20 to R.drawable.card_repair
+            11 to R.drawable.card_winner,
+            12 to R.drawable.card_running,
+            13 to R.drawable.card_jail,
+            14 to R.drawable.card_go_fr,
+            15 to R.drawable.card_leaning,
+            16 to R.drawable.card_fee
         )
     }
 
     // --- Sets pour logique bouton Suivant ---
     // Payer à la BANQUE (montant fixe connu ici) -> PlayerPayToBankCardScanActivity
     private val payBankAmountsK: Map<Int, Double> = mapOf(
-        9 to 2500.0,   // ch_09: Amende pour excès de vitesse. Payez 2,5M.
-        17 to 1000.0,  // ch_17: Amende. Payez 1M.
-        20 to 1000.0   // ch_20: Travaux : payez 1M.
-        // ch_12 = réparations par maison/hôtel -> variable -> on laisse "autres"
+        4 to 150.0,   // ch_09: Amende pour excès de vitesse. Payez 2,5M.
     )
 
     // Recevoir de la BANQUE -> PlayerMenuStartCardScanActivity
     private val gainBankAmountsK: Map<Int, Double> = mapOf(
-        5 to 2000.0,   // ch_05: Départ + Recevez 2M
-        6 to 1500.0,   // ch_06: Dividende 1,5M
-        8 to 1000.0,   // ch_08: Intérêts banque 1M
-        13 to 1000.0,  // ch_13: Intérêt 1M
-        18 to 2500.0   // ch_18: Prix 2,5M
+        9 to 1500.0,   // ch_05: Départ + Recevez 2M
+        14 to 2000.0,   // ch_06: Dividende 1,5M
+        15 to 500.0,   // ch_08: Intérêts banque 1M
     )
 
     private var totalPlayersForPay = 0

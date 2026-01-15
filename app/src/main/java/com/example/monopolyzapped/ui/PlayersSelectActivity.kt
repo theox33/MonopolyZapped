@@ -3,14 +3,13 @@ package com.example.monopolyzapped.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.NavKeys
 import android.media.MediaPlayer
 
 
 
-class PlayersSelectActivity : AppCompatActivity() {
+class PlayersSelectActivity : BaseFlippableActivity() {
 
     private fun playClickSound() {
         val mp = MediaPlayer.create(this, R.raw.dooweep03)

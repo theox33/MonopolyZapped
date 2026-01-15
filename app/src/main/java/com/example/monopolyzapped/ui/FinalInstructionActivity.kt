@@ -14,7 +14,7 @@ import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import kotlin.math.max
 
-class FinalInstructionActivity : AppCompatActivity() {
+class FinalInstructionActivity : BaseFlippableActivity() {
 
     private var players = arrayListOf<Player>() // <-- on maintient la liste ici
 

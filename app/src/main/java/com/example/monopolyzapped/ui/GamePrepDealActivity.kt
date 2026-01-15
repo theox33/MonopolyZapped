@@ -5,12 +5,11 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 
-class GamePrepDealActivity : AppCompatActivity() {
+class GamePrepDealActivity : BaseFlippableActivity() {
 
     private var players = arrayListOf<Player>() // <-- on déclare players ici
 

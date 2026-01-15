@@ -11,55 +11,48 @@ import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.ui.PlayerMenuCommunityAnimationActivity.Companion.EXTRA_RANDOM_CC_ID
 
-class PlayerMenuCommunityCardInstructionActivity : AppCompatActivity() {
+class PlayerMenuCommunityCardInstructionActivity : BaseFlippableActivity() {
 
     // Fond d’écran par carte CC (cc_01..cc_20)
     private val bgById: Map<Int, Int> by lazy {
         mapOf(
             1  to R.drawable.card_go_fr,     // cc_01
-            2  to R.drawable.card_leaning,   // cc_02
-            3  to R.drawable.card_payme,     // cc_03
-            4  to R.drawable.card_jail,      // cc_04
+            2  to R.drawable.card_winner,   // cc_02
+            3  to R.drawable.card_leaning,     // cc_03
+            4  to R.drawable.card_leaping,      // cc_04
             5  to R.drawable.card_leaping,   // cc_05
-            6  to R.drawable.card_present,   // cc_06
-            7  to R.drawable.card_fee,       // cc_07
-            8  to R.drawable.card_leaping,   // cc_08
-            9  to R.drawable.card_beauty,    // cc_09
-            10 to R.drawable.card_running,   // cc_10
-            11 to R.drawable.card_leaning,   // cc_11
-            12 to R.drawable.card_beauty,    // cc_12
-            13 to R.drawable.card_fee,       // cc_13
-            14 to R.drawable.card_pointing,  // cc_14
-            15 to R.drawable.card_leaping,   // cc_15
-            16 to R.drawable.card_pointing,  // cc_16
-            17 to R.drawable.card_fee,       // cc_17
-            18 to R.drawable.card_leaning,   // cc_18
-            19 to R.drawable.card_fee,       // cc_19
-            20 to R.drawable.card_leaning    // cc_20
+            6  to R.drawable.card_fee,   // cc_06
+            7  to R.drawable.card_pointing,       // cc_07
+            8  to R.drawable.card_fee,   // cc_08
+            9  to R.drawable.card_jail,    // cc_09
+            10 to R.drawable.card_pointing,   // cc_10
+            11 to R.drawable.card_present,   // cc_11
+            12 to R.drawable.card_winner,    // cc_12
+            13 to R.drawable.card_leaning,       // cc_13
+            14 to R.drawable.card_beauty,  // cc_14
+            15 to R.drawable.card_repair,   // cc_15
+            16 to R.drawable.card_running  // cc_16
         )
     }
 
     // Payer la BANQUE (→ PlayerPayToBankCardScanActivity), montants en K
     private val payBankAmountsK: Map<Int, Double> = mapOf(
-        3  to 5000.0, // cc_03: 5M
-        7  to 5000.0, // cc_07: 5M
-        13 to 2500.0, // cc_13: 2,5M
-        17 to 1000.0, // cc_17: 1M
-        19 to 1000.0  // cc_19: 1M
+        3  to 500.0, // cc_03: 500k
+        6  to 500.0, // cc_06: 500k
+        8  to 1000.0 // cc_08: 1M
     )
 
     // Recevoir de la BANQUE (→ PlayerMenuStartCardScanActivity), montants en K
     private val gainBankAmountsK: Map<Int, Double> = mapOf(
         1  to 2000.0, // cc_01: 2M
         2  to 2000.0, // cc_02: 2M
-        5  to 1000.0, // cc_05: 1M
-        8  to 2500.0, // cc_08: 2,5M
-        11 to 2000.0, // cc_11: 2M
-        12 to 2500.0, // cc_12: 2,5M
-        14 to 2000.0, // cc_14: 2M
-        15 to 1000.0, // cc_15: 1M
-        16 to 2000.0, // cc_16: 2M
-        18 to 1000.0  // cc_18: 1M
+        4  to 1000.0, // cc_04: 1M
+        7  to 200.0,  // cc_07: 200k
+        10 to 250.0, // cc_10: 250k
+        11 to 500.0, // cc_11: 500k
+        12 to 1000.0, // cc_12: 1M
+        13 to 500.0, // cc_13: 500k
+        14 to 100.0 // cc_14: 100k
     )
 
     // Pour satisfaire PlayerPayToBankCardScanActivity (contrat legacy 1-based + total)

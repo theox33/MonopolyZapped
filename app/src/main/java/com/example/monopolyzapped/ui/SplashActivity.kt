@@ -3,11 +3,10 @@ package com.example.monopolyzapped.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.ui.MainMenuActivity
 import com.example.monopolyzapped.R
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseFlippableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -16,7 +16,7 @@ import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.util.MoneyFormat
 import kotlin.math.max
 
-class PlayerOwnsPropertyActivity : AppCompatActivity() {
+class PlayerOwnsPropertyActivity : BaseFlippableActivity() {
 
     companion object {
         // Reçus depuis WhoOwnsWhatActivity

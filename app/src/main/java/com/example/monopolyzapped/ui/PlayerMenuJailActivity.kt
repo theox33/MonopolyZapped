@@ -14,7 +14,7 @@ import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.util.MoneyFormat
 
-class PlayerMenuJailActivity : AppCompatActivity() {
+class PlayerMenuJailActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_PLAYER_INDEX = "player_index"
@@ -51,7 +51,7 @@ class PlayerMenuJailActivity : AppCompatActivity() {
             // Exemple d’usage immédiat (affichage) :
             Toast.makeText(this, "Achat validé: $amountValue$amountUnit (≈ ${amountM}M)", Toast.LENGTH_SHORT).show()
 
-            // TODO: enchaîner vers l'activité suivante de ton flux (ex: écran de confirmation,
+            // TODO: enchaîner vers l’activité suivante de ton flux (ex: écran de confirmation,
             //       sélection de propriété, mise à jour du joueur, etc.)
             // startActivity(Intent(this, NextActivity::class.java).apply { ... })
         }

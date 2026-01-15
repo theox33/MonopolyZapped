@@ -24,7 +24,7 @@ import kotlin.math.hypot
 import kotlin.math.round
 
 
-class PlayerPayRentCardScanActivity : AppCompatActivity() {
+class PlayerPayRentCardScanActivity : BaseFlippableActivity() {
 
     enum class CardColor { ORANGE, BLEUE, ROSE, VERTE }
 

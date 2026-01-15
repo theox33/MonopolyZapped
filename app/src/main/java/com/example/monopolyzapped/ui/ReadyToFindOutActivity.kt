@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class ReadyToFindOutActivity : AppCompatActivity() {
+class ReadyToFindOutActivity : BaseFlippableActivity() {
 
     // --- Views (ids = ton XML, ne pas modifier) ---
     private lateinit var btnNext: ImageView

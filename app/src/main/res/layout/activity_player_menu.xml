@@ -63,9 +63,9 @@
         android:id="@+id/actionsGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="64dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="32dp"
+        android:layout_margin="1dp"
+        android:layout_marginHorizontal="1dp"
+        android:layout_marginVertical="1dp"
         android:alignmentMode="alignMargins"
         android:columnCount="4"
         android:rowCount="3"
@@ -79,9 +79,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_proprietes" />
 
         <ImageButton
@@ -89,9 +89,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_maisons" />
 
         <ImageButton
@@ -99,9 +99,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_depart" />
 
         <ImageButton
@@ -109,9 +109,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_payer_loyer" />
 
         <ImageButton
@@ -119,9 +119,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_payer_joueur" />
 
         <ImageButton
@@ -129,9 +129,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_encheres" />
 
         <ImageButton
@@ -139,9 +139,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_chance" />
 
         <ImageButton
@@ -149,9 +149,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_caisse_de_communaute" />
 
         <ImageButton
@@ -159,9 +159,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_sortir_de_prison" />
 
         <ImageButton
@@ -169,9 +169,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_taxe_de_luxe" />
 
         <ImageButton
@@ -179,9 +179,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_impots" />
 
         <ImageButton
@@ -189,9 +189,9 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="55dp"
-            android:scaleX="2"
-            android:scaleY="2"
+            android:layout_margin="20dp"
+            android:scaleX="1"
+            android:scaleY="1"
             android:src="@drawable/activite_faillite" />
 
     </GridLayout>
@@ -203,8 +203,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:scaleX="2"
-        android:scaleY="2"
+        android:scaleX="1"
+        android:scaleY="1"
         android:src="@drawable/activite_parametres"
         app:layout_constraintBottom_toTopOf="@+id/actionsGrid"
         app:layout_constraintEnd_toStartOf="@+id/actionsGrid" />
@@ -215,8 +215,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:scaleX="2"
-        android:scaleY="2"
+        android:scaleX="1"
+        android:scaleY="1"
         android:src="@drawable/activite_end_game"
         app:layout_constraintBottom_toTopOf="@+id/actionsGrid"
         app:layout_constraintStart_toEndOf="@+id/actionsGrid" />
@@ -227,8 +227,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:scaleX="2"
-        android:scaleY="2"
+        android:scaleX="1"
+        android:scaleY="1"
         android:src="@drawable/activite_home"
         app:layout_constraintEnd_toStartOf="@+id/actionsGrid"
         app:layout_constraintTop_toBottomOf="@+id/actionsGrid" />
@@ -239,8 +239,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:scaleX="2"
-        android:scaleY="2"
+        android:scaleX="1"
+        android:scaleY="1"
         android:src="@drawable/activite_aide"
         app:layout_constraintStart_toEndOf="@+id/actionsGrid"
         app:layout_constraintTop_toBottomOf="@+id/actionsGrid" />

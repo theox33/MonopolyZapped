@@ -30,7 +30,7 @@ import android.widget.FrameLayout
 import com.example.monopolyzapped.util.MoneyFormat
 
 
-class PlayerChooseSideActivity : AppCompatActivity() {
+class PlayerChooseSideActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_CURRENT_INDEX = "current_index" // 1-based

@@ -3,14 +3,12 @@ package com.example.monopolyzapped.ui
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.widget.TextView
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 
-class PlayerCardIntroActivity : AppCompatActivity() {
+class PlayerCardIntroActivity : BaseFlippableActivity() {
 
     private var totalPlayers: Int = 2
     private var currentIndex: Int = 1

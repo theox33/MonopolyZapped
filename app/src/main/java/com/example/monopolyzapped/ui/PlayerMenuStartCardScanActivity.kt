@@ -23,7 +23,7 @@ import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.round
 
-class PlayerMenuStartCardScanActivity : AppCompatActivity() {
+class PlayerMenuStartCardScanActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_SHOW_BACK = "show_back"

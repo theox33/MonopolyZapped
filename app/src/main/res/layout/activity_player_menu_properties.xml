@@ -87,11 +87,12 @@
     <!-- Rangée de 4 boutons -->
     <LinearLayout
         android:id="@+id/actionsRow"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/questionBanner">
@@ -118,8 +119,8 @@
             android:layout_height="224dp"
             android:layout_margin="24dp"
             android:background="@android:color/transparent"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
             android:src="@drawable/pa_buy_button" />
 
         <ImageButton
@@ -134,8 +135,8 @@
     <!-- Bouton retour en bas à gauche -->
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
         android:background="@android:color/transparent"

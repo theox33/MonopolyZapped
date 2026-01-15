@@ -23,7 +23,7 @@ import com.example.monopolyzapped.util.TransactionHistory
 import com.example.monopolyzapped.util.TransactionRecord
 import kotlin.math.roundToLong
 
-class PlayerTransactionAnimationActivity : AppCompatActivity() {
+class PlayerTransactionAnimationActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_AMOUNT_LABEL = "amount_label"   // ex: "Transfert... 250 K"

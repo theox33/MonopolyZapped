@@ -69,6 +69,8 @@ hl_card7.png
 hl_card8.png
 icon.png
 instructions.png
+instruction_background_chance.png
+
 intro_monopoly_half.png
 left_info_bar_0.png
 left_info_bar_1.png

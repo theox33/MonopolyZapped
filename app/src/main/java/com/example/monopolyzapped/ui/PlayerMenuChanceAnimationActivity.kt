@@ -1,19 +1,17 @@
 package com.example.monopolyzapped.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
+import com.example.monopolyzapped.model.Player
 import kotlin.random.Random
 
-// imports à ajouter
-import android.os.Build
-import com.example.monopolyzapped.model.Player
-
-class PlayerMenuChanceAnimationActivity : AppCompatActivity() {
+class PlayerMenuChanceAnimationActivity : BaseFlippableActivity() {
 
     companion object { const val EXTRA_RANDOM_CHANCE_ID = "extra_random_chance_id" }
 

@@ -11,14 +11,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-class WhoOwnsWhatActivity : AppCompatActivity() {
+class WhoOwnsWhatActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_TURN_INDEX = "turn_index"

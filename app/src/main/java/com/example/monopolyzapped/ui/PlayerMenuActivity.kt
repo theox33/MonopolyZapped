@@ -14,7 +14,7 @@ import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 import com.example.monopolyzapped.util.MoneyFormat
 
-class PlayerMenuActivity : AppCompatActivity() {
+class PlayerMenuActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_PLAYER_INDEX = "player_index"

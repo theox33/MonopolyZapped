@@ -127,6 +127,15 @@ class GameMainMenuActivity : AppCompatActivity() {
             Corner.BR -> { tile = tileBR; tokenIv = tileTokenBR; nameTv = tileNameBR; moneyTv = tileMoneyBR; stripIv = tileBottomBR }
         }
 
+        // ✅ Orientation voulue dans le main menu:
+        // - TL/TR doivent rester à 180° (joueurs "en face")
+        // - BL/BR restent à 0°
+        val tileRotation = when (corner) {
+            Corner.TL, Corner.TR -> 180f
+            Corner.BL, Corner.BR -> 0f
+        }
+        tile.rotation = tileRotation
+
         tile.apply {
             setBackgroundResource(p.tileBgDrawable())
             visibility = View.VISIBLE
@@ -178,7 +187,11 @@ class GameMainMenuActivity : AppCompatActivity() {
 
     // -------- interactions : clic sur chaque tuile --------
     private fun setupTileClicks() {
-        fun go(playerIndex: Int) {
+        fun go(playerIndex: Int, corner: Corner) {
+            // TL/TR => joueur en face => on retourne toutes les activités suivantes.
+            // BL/BR => rien (on reste à l'endroit).
+            UiFlipStore.setFlipped(this, corner == Corner.TL || corner == Corner.TR)
+
             val intent = Intent(this, PlayerMenuActivity::class.java).apply {
                 putExtra(PlayerMenuActivity.EXTRA_PLAYER_INDEX, playerIndex)
                 putParcelableArrayListExtra(NavKeys.PLAYERS, players)
@@ -193,10 +206,10 @@ class GameMainMenuActivity : AppCompatActivity() {
         val idxBR = players.indexOfFirst { it.corner == "br" }
 
         // N’attache le clic (avec anim + son) que si une tuile est occupée
-        if (idxTL != -1) tileTL.bindClickWithPressAndSound { go(idxTL) } else tileTL.isClickable = false
-        if (idxTR != -1) tileTR.bindClickWithPressAndSound { go(idxTR) } else tileTR.isClickable = false
-        if (idxBL != -1) tileBL.bindClickWithPressAndSound { go(idxBL) } else tileBL.isClickable = false
-        if (idxBR != -1) tileBR.bindClickWithPressAndSound { go(idxBR) } else tileBR.isClickable = false
+        if (idxTL != -1) tileTL.bindClickWithPressAndSound { go(idxTL, Corner.TL) } else tileTL.isClickable = false
+        if (idxTR != -1) tileTR.bindClickWithPressAndSound { go(idxTR, Corner.TR) } else tileTR.isClickable = false
+        if (idxBL != -1) tileBL.bindClickWithPressAndSound { go(idxBL, Corner.BL) } else tileBL.isClickable = false
+        if (idxBR != -1) tileBR.bindClickWithPressAndSound { go(idxBR, Corner.BR) } else tileBR.isClickable = false
     }
 
 
@@ -204,6 +217,10 @@ class GameMainMenuActivity : AppCompatActivity() {
     // -------- lifecycle --------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Le main menu ne doit jamais être retourné, et il marque le retour à la rotation initiale.
+        UiFlipStore.reset(this)
+
         setContentView(R.layout.activity_game_main_menu) // <-- ce layout doit contenir tous les IDs listés plus haut
         enterImmersiveMode()
 

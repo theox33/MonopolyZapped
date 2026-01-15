@@ -5,12 +5,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.example.monopolyzapped.NavKeys
 import com.example.monopolyzapped.R
 import com.example.monopolyzapped.model.Player
 
-class PlayerMenuCommunityAnimationActivity : AppCompatActivity() {
+class PlayerMenuCommunityAnimationActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_RANDOM_CC_ID = "extra_random_cc_id" // 1..20

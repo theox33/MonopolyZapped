@@ -16,7 +16,7 @@ import android.media.SoundPool
 import android.media.AudioAttributes
 import androidx.activity.result.contract.ActivityResultContracts // <-- ajout
 
-class PlayerMenuPropertiesSellActivity : AppCompatActivity() {
+class PlayerMenuPropertiesSellActivity : BaseFlippableActivity() {
 
     companion object {
         const val EXTRA_PLAYER_INDEX = "player_index"
